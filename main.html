@@ -15,6 +15,11 @@
       href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap"
       rel="stylesheet"
     />
+    <style>
+      html {
+        scroll-behavior: smooth;
+      }
+    </style>
   </head>
   <body>
     <!-- Navigation -->
@@ -23,16 +28,18 @@
         <div class="profile"><h1>Diego Burgos</h1></div>
         <ul>
           <li>
-            <a href="https://facebook.com"
+            <a href="https://www.facebook.com/m0nsterssss"
               ><i class="fa-brands fa-facebook"></i
             ></a>
             <!-- Facebook -->
           </li>
           <li>
-            <a href="https://facebook.com"><i class="fa-solid fa-code"></i></a>
+            <a href="https://github.com/yourcatismine"
+              ><i class="fa-solid fa-code"></i
+            ></a>
           </li>
           <li>
-            <a href="https://facebook.com"><i class="fa-solid fa-book"></i></a>
+            <a href="#schools"><i class="fa-solid fa-book"></i></a>
           </li>
         </ul>
       </div>
@@ -54,7 +61,7 @@
     </div>
 
     <!-- Arrow Icon Down -->
-    <div class="alignarrow">
+    <div id="schools" class="alignarrow">
       <h1><i class="fa-solid fa-arrow-down"></i></h1>
     </div>
 
@@ -194,7 +201,7 @@
     </div>
 
     <!--My Project Lists-->
-    <div class="projects">
+    <div id="projects" class="projects">
       <div class="projectlists">
         <h1 class="projecttext">My Projects</h1>
         <b class="projectdesc"
@@ -291,7 +298,7 @@
     </div>
 
     <!-- Laanguages -->
-    <div class="language">
+    <div id="language" class="language">
       <div class="languagelist">
         <div class="textlang">
           <h1 class="langtitle">My Langauges</h1>
@@ -326,20 +333,24 @@
       </div>
     </div>
 
-    <!-- FOOTER -->
+    <!-- FOOTER --->
     <div class="footer">
       <div class="top">
         <div class="logo">DRYER</div>
         <div class="footernav">
           <a href="#">HOME</a>
-          <a href="#">PROJECTS</a>
-          <a href="#">LANGUAGES</a>
-          <a href="#">GITHUB</a>
+          <a href="#projects">PROJECTS</a>
+          <a href="https://www.facebook.com/m0nsterssss">FACEBOOK</a>
+          <a href="https://github.com/yourcatismine">GITHUB</a>
         </div>
         <div class="socials">
-          <a href="#"><i class="fa-solid fa-code"></i></a>
-          <a href="#"><i class="fa-brands fa-facebook"></i></a>
-          <a href="#"><i class="fa-solid fa-book"></i></a>
+          <a href="https://github.com/yourcatismine"
+            ><i class="fa-solid fa-code"></i
+          ></a>
+          <a href="https://www.facebook.com/m0nsterssss"
+            ><i class="fa-brands fa-facebook"></i
+          ></a>
+          <a href="#schools"><i class="fa-solid fa-book"></i></a>
         </div>
       </div>
       <div class="bottom">&copy;Copyright. All rights reserved.</div>
@@ -428,5 +439,16 @@
       navbar.classList.remove("hidden");
     }
     lastScrollY = window.scrollY;
+  });
+
+  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+    anchor.addEventListener("click", function (e) {
+      const targetId = this.getAttribute("href").slice(1);
+      const target = document.getElementById(targetId);
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: "smooth" });
+      }
+    });
   });
 </script>
