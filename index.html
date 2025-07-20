@@ -25,7 +25,7 @@
     <!-- Navigation -->
     <div class="navigation">
       <div class="nav">
-        <div class="profile"><h1>Diego Burgos</h1></div>
+        <div class="profile"><h1>Kiara</h1></div>
         <ul>
           <li>
             <a href="https://www.facebook.com/m0nsterssss"
@@ -203,11 +203,14 @@
     <!--My Project Lists-->
     <div id="projects" class="projects">
       <div class="projectlists">
+        <div class="projectproject">
         <h1 class="projecttext">My Projects</h1>
         <b class="projectdesc"
           >These are just some of the random projects I've enjoyed programming
           over time.</b
         >
+        </div>
+        <div class="whitelineproject"></div>
 
         <div class="projectbackground">
           <!--Minecraft Bot-->
@@ -293,6 +296,17 @@
               </b>
             </div>
           </div>
+
+          <!-- C Sharp Project -->
+          <div class="eachproject">
+            <img src="./images/csharp.png" alt="C Sharp Learning" />
+            <div class="projectinfo">
+              <h1 class="projectname">C Sharp Learning</h1>
+              <b class="filedesc">
+                First C Sharp Learning Project.
+              </b>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -302,7 +316,8 @@
       <div class="languagelist">
         <div class="textlang">
           <h1 class="langtitle">My Langauges</h1>
-          <b class="langdesc">These are the languages I know</b>
+          <b class="langdesc">These are the languages I know</b>'
+          <div class="whitelinelang"></div>
         </div>
 
         <div class="eachbackground">
@@ -329,9 +344,395 @@
               <h1 class="langname">Cascading Style Sheets</h1>
             </div>
           </div>
+
+          <!-- C Sharp -->
+          <div class="eachlanguage">
+            <img src="./images/csharp.png" />
+            <div class="langinfo">
+              <h1 class="langname">C Sharp / C# (Learning)</h1>
+            </div>
+          </div>
         </div>
       </div>
     </div>
+
+    <!-- Favorite Music -->
+     <div class="favbackground">
+      <div class="favoriteitems">
+        <div class="favtext">
+          <h1>Favorite Artists</h1>
+          <b class="favdesc">My Music Collection</b>
+        </div>
+        <div class="whiteline"></div>
+
+        <!-- Song Lists -->
+        <div class="favoritelist">
+          <div class="artists-container">
+            <!-- Cigarettes After Sex -->
+            <div class="artist-section">
+              <div class="favtext">
+                <h1>Cigarettes After Sex</h1>
+                <b class="favdesc">Songs</b>
+              </div>
+              <div class="whiteline"></div>
+              <div class="song-grid">
+                <!-- Each Song -->
+
+                <!-- 1. Apocolypse -->
+                <div class="song-item">
+                  <div class="song-number">1</div>
+                  <div class="song-image-container">
+                    <img src="./albums/CAS/Apocolypse.png" alt="Apocalypse" class="song-image"/>
+                    <div class="play-button" onclick="playSong('cas-apocolypse', './musics/CAS/Apocalypse.mp3')">
+                      <i class="fa-solid fa-play"></i>
+                    </div>
+                  </div>
+                  <audio id="cas-apocolypse" src="./musics/CAS/Apocalypse.mp3"></audio>
+                  <div class="song-info">
+                    <div class="song-name">Apocolypse</div>
+                    <div class="song-artist">Cigarettes After Sex</div>
+                  </div>
+                  <div class="song-album">Cigarettes After Sex</div>
+                  <div class="song-duration">4:51</div>
+                </div>
+
+                <!-- 2. Sunsetz -->
+                <div class="song-item">
+                  <div class="song-number">2</div>
+                  <div class="song-image-container">
+                    <img src="./albums/CAS/Sunsetz.png" alt="Sunsetz" class="song-image"/>
+                    <div class="play-button" onclick="playSong('cas-sunsetz', './musics/CAS/Sunsetz.mp3')">
+                      <i class="fa-solid fa-play"></i>
+                    </div>
+                  </div>
+                  <audio id="cas-sunsetz" src="./musics/CAS/Sunsetz.mp3"></audio>
+                  <div class="song-info">
+                    <div class="song-name">Sunsetz</div>
+                    <div class="song-artist">Cigarettes After Sex</div>
+                  </div>
+                  <div class="song-album">Cigarettes After Sex</div>
+                  <div class="song-duration">3:35</div>
+                </div>
+
+                <!-- 3. Stop Waiting -->
+                <div class="song-item">
+                  <div class="song-number">3</div>
+                  <div class="song-image-container">
+                    <img src="./albums/CAS/StopWaiting.png" alt="StopWaiting" class="song-image"/>
+                    <div class="play-button" onclick="playSong('cas-stopwaiting', './musics/CAS/StopWaiting.mp3')">
+                      <i class="fa-solid fa-play"></i>
+                    </div>
+                  </div>
+                  <audio id="cas-stopwaiting" src="./musics/CAS/StopWaiting.mp3"></audio>
+                  <div class="song-info">
+                    <div class="song-name">Stop Waiting</div>
+                    <div class="song-artist">Cigarettes After Sex</div>
+                  </div>
+                  <div class="song-album">Bubble Gum</div>
+                  <div class="song-duration">6:03</div>
+                </div>
+
+                <!-- 4. K. -->
+                <div class="song-item">
+                  <div class="song-number">4</div>
+                  <div class="song-image-container">
+                    <img src="./albums/CAS/K.png" alt="K." class="song-image"/>
+                    <div class="play-button" onclick="playSong('cas-k', './musics/CAS/K.mp3')">
+                      <i class="fa-solid fa-play"></i>
+                    </div>
+                  </div>
+                  <audio id="cas-k" src="./musics/CAS/K.mp3"></audio>
+                  <div class="song-info">
+                    <div class="song-name">K.</div>
+                    <div class="song-artist">Cigarettes After Sex</div>
+                  </div>
+                  <div class="song-album">Cigarettes After Sex</div>
+                  <div class="song-duration">5:18</div>
+                </div>
+
+                <!-- 5. Heavenly -->
+                <div class="song-item">
+                  <div class="song-number">5</div>
+                  <div class="song-image-container">
+                    <img src="./albums/CAS/Heavenly.png" alt="heavenly" class="song-image"/>
+                    <div class="play-button" onclick="playSong('cas-heavenly', './musics/CAS/Heavenly.mp3')">
+                      <i class="fa-solid fa-play"></i>
+                    </div>
+                  </div>
+                  <audio id="cas-heavenly" src="./musics/CAS/Heavenly.mp3"></audio>
+                  <div class="song-info">
+                    <div class="song-name">Heavenly</div>
+                    <div class="song-artist">Cigarettes After Sex</div>
+                  </div>
+                  <div class="song-album">Cry</div>
+                  <div class="song-duration">4:47</div>
+                </div>
+
+                <!-- 6. Cry --> 
+                <div class="song-item">
+                  <div class="song-number">6</div>
+                  <div class="song-image-container">
+                    <img src="./albums/CAS/cas.png" alt="cry" class="song-image"/>
+                    <div class="play-button" onclick="playSong('cas-cry', './musics/CAS/Cry.mp3')">
+                      <i class="fa-solid fa-play"></i>
+                    </div>
+                  </div>
+                  <audio id="cas-cry" src="./musics/CAS/Cry.mp3"></audio>
+                  <div class="song-info">
+                    <div class="song-name">Cry</div>
+                    <div class="song-artist">Cigarettes After Sex</div>
+                  </div>
+                  <div class="song-album">Cry</div>
+                  <div class="song-duration">4:17</div>
+                </div>
+
+                <!-- 7. Opera House --> 
+                <div class="song-item">
+                  <div class="song-number">7</div>
+                  <div class="song-image-container">
+                    <img src="./albums/CAS/OperaHouse.png" alt="operahouse" class="song-image"/>
+                    <div class="play-button" onclick="playSong('cas-operahouse', './musics/CAS/OperaHouse.mp3')">
+                      <i class="fa-solid fa-play"></i>
+                    </div>
+                  </div>
+                  <audio id="cas-operahouse" src="./musics/CAS/OperaHouse.mp3"></audio>
+                  <div class="song-info">
+                    <div class="song-name">Opera House</div>
+                    <div class="song-artist">Cigarettes After Sex</div>
+                  </div>
+                  <div class="song-album">Cigarettes After Sex</div>
+                  <div class="song-duration">6:06</div>
+                </div>
+
+                <!-- 8. John Wayne --> 
+                <div class="song-item">
+                  <div class="song-number">8</div>
+                  <div class="song-image-container">
+                    <img src="./albums/CAS/JohnWayne.png" alt="johnwayne" class="song-image"/>
+                    <div class="play-button" onclick="playSong('cas-johnwayne', './musics/CAS/JohnWayne.mp3')">
+                      <i class="fa-solid fa-play"></i>
+                    </div>
+                  </div>
+                  <audio id="cas-johnwayne" src="./musics/CAS/JohnWayne.mp3"></audio>
+                  <div class="song-info">
+                    <div class="song-name">John Wayne</div>
+                    <div class="song-artist">Cigarettes After Sex</div>
+                  </div>
+                  <div class="song-album">Cigarettes After Sex</div>
+                  <div class="song-duration">4:19</div>
+                </div>
+
+                <!-- 9. Keep On Loving You --> 
+                <div class="song-item">
+                  <div class="song-number">9</div>
+                  <div class="song-image-container">
+                    <img src="./albums/CAS/KeeponLovingYou.png" alt="keeponlovingyou" class="song-image"/>
+                    <div class="play-button" onclick="playSong('cas-keeponlovingyou', './musics/CAS/KeeponLovingYou.mp3')">
+                      <i class="fa-solid fa-play"></i>
+                    </div>
+                  </div>
+                  <audio id="cas-keeponlovingyou" src="./musics/CAS/KeepOnLovingYou.mp3"></audio>
+                  <div class="song-info">
+                    <div class="song-name">Keep On Loving You</div>
+                    <div class="song-artist">Cigarettes After Sex</div>
+                  </div>
+                  <div class="song-album">Affection</div>
+                  <div class="song-duration">3:53</div>
+                </div>
+
+                <!-- 10. Touch --> 
+                <div class="song-item">
+                  <div class="song-number">10</div>
+                  <div class="song-image-container">
+                    <img src="./albums/CAS/cas.png" alt="touch" class="song-image"/>
+                    <div class="play-button" onclick="playSong('cas-touch', './musics/CAS/Touch.mp3')">
+                      <i class="fa-solid fa-play"></i>
+                    </div>
+                  </div>
+                  <audio id="cas-touch" src="./musics/CAS/Touch.mp3"></audio>
+                  <div class="song-info">
+                    <div class="song-name">Touch</div>
+                    <div class="song-artist">Cigarettes After Sex</div>
+                  </div>
+                  <div class="song-album">Cry</div>
+                  <div class="song-duration">4:53</div>
+                </div>
+
+                <!-- 11. Nothings Gonna Hurt You Baby --> 
+                <div class="song-item">
+                  <div class="song-number">11</div>
+                  <div class="song-image-container">
+                    <img src="./albums/CAS/cas.png" alt="nothingsgonnahurtyoubaby" class="song-image"/>
+                    <div class="play-button" onclick="playSong('cas-nothingsgonnahurtyoubaby', './musics/CAS/NothingsGonnaHurtYoubaby.mp3')">
+                      <i class="fa-solid fa-play"></i>
+                    </div>
+                  </div>
+                  <audio id="cas-nothingsgonnahurtyoubaby" src="./musics/CAS/NothingsGonnaHurtYouBaby.mp3"></audio>
+                  <div class="song-info">
+                    <div class="song-name">Nothings Gonna Hurt You Baby</div>
+                    <div class="song-artist">Cigarettes After Sex</div>
+                  </div>
+                  <div class="song-album">I.</div>
+                  <div class="song-duration">4:45</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Vacations -->
+            <div class="artist-section">
+              <div class="favtext">
+                <h1>Vacations</h1>
+                <b class="favdesc">Songs</b>
+              </div>
+              <div class="whiteline"></div>
+              <div class="song-grid">
+
+                <!-- 1. Telephones -->
+                <div class="song-item">
+                  <div class="song-number">1</div>
+                  <div class="song-image-container">
+                    <img src="./albums/VACATIONS/Telephones.png" alt="Vacations" class="song-image"/>
+                    <div class="play-button" onclick="playSong('vac-vacations', './musics/VACATIONS/Telephones.mp3')">
+                      <i class="fa-solid fa-play"></i>
+                    </div>
+                  </div>
+                  <audio id="vac-vacations" src="./musics/VACATIONS/Vacations.mp3"></audio>
+                  <div class="song-info">
+                    <div class="song-name">Telephones</div>
+                    <div class="song-artist">Vacations</div>
+                  </div>
+                  <div class="song-album">Vacations</div>
+                  <div class="song-duration">3:34</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Radio Head -->
+            <div class="artist-section">
+              <div class="favtext">
+                <h1>RadioHead</h1>
+                <b class="favdesc">Songs</b>
+              </div>
+              <div class="whiteline"></div>
+              <div class="song-grid">
+
+                <!-- 1. Let Down -->
+                <div class="song-item">
+                  <div class="song-number">1</div>
+                  <div class="song-image-container">
+                    <img src="./albums/RADIOHEAD/LetDown.png" alt="Letdown" class="song-image"/>
+                    <div class="play-button" onclick="playSong('radio-letdown', './musics/RADIOHEAD/LetDown.mp3')">
+                      <i class="fa-solid fa-play"></i>
+                    </div>
+                  </div>
+                  <audio id="radio-letdown" src="./musics/RADIOHEAD/LetDown.mp3"></audio>
+                  <div class="song-info">
+                    <div class="song-name">Let Down</div>
+                    <div class="song-artist">RadioHead</div>
+                  </div>
+                  <div class="song-album">RadioHead</div>
+                  <div class="song-duration">5:00</div>
+                </div>
+
+                <!-- 2. No Suprises -->
+                <div class="song-item">
+                  <div class="song-number">2</div>
+                  <div class="song-image-container">
+                    <img src="./albums/RADIOHEAD/NoSuprises.png" alt="Nosuprises" class="song-image"/>
+                    <div class="play-button" onclick="playSong('radio-nosuprises', './musics/RADIOHEAD/NoSuprises.mp3')">
+                      <i class="fa-solid fa-play"></i>
+                    </div>
+                  </div>
+                  <audio id="radio-nosuprises" src="./musics/RADIOHEAD/NoSurprises.mp3"></audio>
+                  <div class="song-info">
+                    <div class="song-name">No Suprises</div>
+                    <div class="song-artist">RadioHead</div>
+                  </div>
+                  <div class="song-album">RadioHead</div>
+                  <div class="song-duration">3:48</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Ricky Montgomery -->
+            <div class="artist-section">
+              <div class="favtext">
+                <h1>Ricky Montgomery</h1>
+                <b class="favdesc">Songs</b>
+              </div>
+              <div class="whiteline"></div>
+              <div class="song-grid">
+
+                <!-- 1. A Line Without A Hook -->
+                <div class="song-item">
+                  <div class="song-number">1</div>
+                  <div class="song-image-container">
+                    <img src="./albums/RickyMontgomery/LineWithoutAhook.png" alt="LineWithoutAhook" class="song-image"/>
+                    <div class="play-button" onclick="playSong('ricky-linewithoutahook', './musics/RickyMontgomery/LineWithoutAHook.mp3')">
+                      <i class="fa-solid fa-play"></i>
+                    </div>
+                  </div>
+                  <audio id="ricky-linewithoutahook" src="./musics/RickyMontgomery/LineWithoutAHook.mp3"></audio>
+                  <div class="song-info">
+                    <div class="song-name">A Line Without A Hook</div>
+                    <div class="song-artist">Ricky Montgomery</div>
+                  </div>
+                  <div class="song-album">Ricky Montgomery</div>
+                  <div class="song-duration">4:33</div>
+                </div>
+
+                <!-- 2. Mr Loverman -->
+                <div class="song-item">
+                  <div class="song-number">2</div>
+                  <div class="song-image-container">
+                    <img src="./albums/RickyMontgomery/MrLoverman.png" alt="MrLoverman" class="song-image"/>
+                    <div class="play-button" onclick="playSong('ricky-mrloverman', './musics/RickyMontgomery/MrLoverman.mp3')">
+                      <i class="fa-solid fa-play"></i>
+                    </div>
+                  </div>
+                  <audio id="ricky-mrloverman" src="./musics/RickyMontgomery/MrLoverman.mp3"></audio>
+                  <div class="song-info">
+                    <div class="song-name">Mr Loverman</div>
+                    <div class="song-artist">Ricky Montgomery</div>
+                  </div>
+                  <div class="song-album">Ricky Montgomery</div>
+                  <div class="song-duration">4:25</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- The 1975 -->
+            <div class="artist-section">
+              <div class="favtext">
+                <h1>The 1975</h1>
+                <b class="favdesc">Songs</b>
+              </div>
+              <div class="whiteline"></div>
+              <div class="song-grid">
+
+                <!-- 1. About YOu -->
+                <div class="song-item">
+                  <div class="song-number">1</div>
+                  <div class="song-image-container">
+                    <img src="./albums/The1975/AboutYou.png" alt="AboutYou" class="song-image"/>
+                    <div class="play-button" onclick="playSong('the-aboutyou', './musics/The1975/AboutYou.mp3')">
+                      <i class="fa-solid fa-play"></i>
+                    </div>
+                  </div>
+                  <audio id="the-aboutyou" src="./musics/The1975/The1975.mp3"></audio>
+                  <div class="song-info">
+                    <div class="song-name">About You</div>
+                    <div class="song-artist">The 1975</div>
+                  </div>
+                  <div class="song-album">The 1975</div>
+                  <div class="song-duration">5:27</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+     </div>
 
     <!-- FOOTER --->
     <div class="footer">
@@ -355,6 +756,8 @@
       </div>
       <div class="bottom">&copy;Copyright. All rights reserved.</div>
     </div>
+    <script src="script.js"></script>
+    <script src="js/musicPlayer.js"></script>
   </body>
 </html>
 
@@ -363,7 +766,7 @@
   const messages = [
     "Welcome to my portfolio!",
     "I'm a Developer!",
-    "Front End Developer",
+    "Simple Developer",
     "Diego Burgos!",
   ];
 
@@ -441,6 +844,7 @@
     lastScrollY = window.scrollY;
   });
 
+  //For Smooth Scrolling
   document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
     anchor.addEventListener("click", function (e) {
       const targetId = this.getAttribute("href").slice(1);
