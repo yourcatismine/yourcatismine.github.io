@@ -50,6 +50,47 @@ body {
   }
 }
 
+/* Greeting Pop Up */
+.greetright {
+  width: 340px;
+  margin-left: auto;
+  display: hide;
+}
+
+.greeting {
+  background-color: rgba(241, 241, 241, 0.308);
+  width: 300px;
+  border-radius: 5px;
+  padding: 5px;
+  margin: 10px;
+  text-align: center;
+  margin-top: 80px;
+  display: hide;
+}
+
+.close {
+  text-align: right;
+  color: white;
+}
+
+.greettext {
+  padding: 20px;
+  margin: 0;
+  padding: 0;
+  
+}
+
+.greeting h1 {
+  font-size: 20px;
+  color: white;
+  text-shadow: 0 0 20px white;
+}
+
+.greeting b {
+  color: rgb(255, 255, 255);
+  font-size: 14px;
+}
+
 .play-button.playing i {
   animation: rotate-play 2s linear infinite;
 }
@@ -205,15 +246,13 @@ body {
 }
 
 .song-item.playing .music-bar:nth-child(1) { animation: music-bars 0.5s infinite; }
-.song-item.playing .music-bar:nth-child(2) { animation: music-bars 0.7s infinite; animation-delay: 0.2s; }
-.song-item.playing .music-bar:nth-child(3) { animation: music-bars 0.4s infinite; animation-delay: 0.3s; }
-.song-item.playing .music-bar:nth-child(4) { animation: music-bars 0.6s infinite; animation-delay: 0.4s; }
 
 .song-item.playing {
-  background: linear-gradient(90deg, rgba(105, 83, 45, 0.2), rgba(255, 215, 0, 0.1), rgba(105, 83, 45, 0.2));
+  background: linear-gradient(90deg, rgba(105,83,45,0.2), rgba(255,215,0,0.1), rgba(105,83,45,0.2));
   background-size: 200% 100%;
   animation: shine 3s infinite linear;
-  border: 1px solid rgba(255, 215, 0, 0.2);
+  border: 1px solid rgba(255,215,0,0.2);
+  position: relative;
 }
 
 .song-item.playing .song-name {
@@ -1044,6 +1083,31 @@ a:hover {
 
 /* Desktop (992px to 1199px) */
 @media (max-width: 1199px) {
+
+    .greeting {
+    background-color: rgba(241, 241, 241, 0.308);
+    width: 300px;
+    height: auto;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 1px;
+    text-align: center;
+    margin-top: 20px;
+    position: fixed; 
+    right: 10px; 
+  }
+
+  .greeting h1 {
+    font-size: 20px;
+    color: white;
+    text-shadow: 0 0 10px white;
+  }
+
+  .greeting b {
+    color: rgb(255, 255, 255);
+    font-size: 14px;
+  }
+
   .nav {
     width: 90%;
     max-width: 800px;
@@ -1066,6 +1130,31 @@ a:hover {
 
 /* Tablet (768px to 991px) */
 @media (max-width: 991px) {
+
+  .greeting {
+    background-color: rgba(241, 241, 241, 0.308);
+    width: 150px;
+    height: auto;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 1px;
+    text-align: center;
+    margin-top: 20px;
+    position: fixed; 
+    right: 10px; 
+  }
+
+  .greeting h1 {
+    font-size: 18px;
+    color: white;
+    text-shadow: 0 0 10px white;
+  }
+
+  .greeting b {
+    color: rgb(255, 255, 255);
+    font-size: 12px;
+  }
+
   .nav {
     width: 80%;
     padding: 10px;
@@ -1126,6 +1215,31 @@ a:hover {
 
 /* Mobile Landscape (576px to 767px) */
 @media (max-width: 767px) {
+
+  .greeting {
+    background-color: rgba(241, 241, 241, 0.308);
+    width: 150px;
+    height: auto; 
+    border-radius: 5px;
+    padding: 10px; 
+    margin: 1px;
+    text-align: center;
+    margin-top: 20px;
+    position: fixed; 
+    right: 10px; 
+  }
+
+  .greeting h1 {
+    font-size: 15px;
+    color: white;
+    text-shadow: 0 0 10px white;
+  }
+
+  .greeting b {
+    color: rgb(255, 255, 255);
+    font-size: 10px; /* Smaller font size */
+  }
+
   .nav {
     flex-direction: column;
     padding: 15px;
@@ -1213,16 +1327,8 @@ a:hover {
 
 /* Artist Section Responsive */
 @media (max-width: 768px) {
-  .artists-container {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  
-  .artist-section {
-    width: 100%;
-    max-width: none;
-    margin: 15px 0;
-  }
+  .artists-container { flex-direction: column; }
+  .artist-section { width: 100%; margin: 15px 0; }
 }
 
 /* Mobile Portrait (up to 575px) */

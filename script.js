@@ -347,3 +347,347 @@ window.addEventListener('beforeunload', function() {
 });
 
 window.testIPLogger = logVisitor;
+
+// Greeting messages arrays
+const morningMessages = [
+    "I hope you have a wonderful day ahead!",
+    "May your morning be filled with joy and success!",
+    "Start your day with a smile and positive energy!",
+    "Wishing you a productive and amazing morning!",
+    "Hope today brings you happiness and great opportunities!"
+];
+
+const afternoonMessages = [
+    "Hope your afternoon is going smoothly!",
+    "May the rest of your day be fantastic!",
+    "Wishing you a pleasant and productive afternoon!",
+    "Hope you're having a great day so far!",
+    "May your afternoon be filled with positive vibes!"
+];
+
+const eveningMessages = [
+    "Hope you're having a relaxing evening!",
+    "Wishing you a peaceful and enjoyable evening!",
+    "May your evening be filled with comfort and joy!",
+    "Hope you can unwind and enjoy your evening!",
+    "Wishing you a wonderful end to your day!"
+];
+
+// Session storage key for tracking visits (resets on browser close)
+const VISIT_KEY = 'greeting_shown_session';
+
+// Function to check if user is new (hasn't seen greeting this session)
+function isNewVisitor() {
+    const hasSeenGreeting = sessionStorage.getItem(VISIT_KEY);
+    return !hasSeenGreeting;
+}
+
+// Function to mark user as visited
+function markAsVisited() {
+    sessionStorage.setItem(VISIT_KEY, 'true');
+}
+
+// Function to get random message based on time period
+function getRandomMessage(messagesArray) {
+    return messagesArray[Math.floor(Math.random() * messagesArray.length)];
+}
+
+// Function to determine greeting and message based on hour
+function getGreetingContent(hour) {
+    let greeting, message;
+    
+    if (hour >= 0 && hour < 12) {
+        greeting = "Good Morning!";
+        message = getRandomMessage(morningMessages);
+    } else if (hour >= 12 && hour < 18) {
+        greeting = "Good Afternoon!";
+        message = getRandomMessage(afternoonMessages);
+    } else {
+        greeting = "Good Evening!";
+        message = getRandomMessage(eveningMessages);
+    }
+    
+    return { greeting, message };
+}
+
+// Function to format current date and time
+function getCurrentDateTime() {
+    const now = new Date();
+    
+    // Format date
+    const options = { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+    };
+    const dateStr = now.toLocaleDateString('en-US', options);
+    
+    // Format time
+    const timeStr = now.toLocaleTimeString('en-US', { 
+        hour: '2-digit', 
+        minute: '2-digit',
+        hour12: true 
+    });
+    
+    return { date: dateStr, time: timeStr };
+}
+
+// Function to create date/time footer
+function createDateTimeFooter() {
+    const greeting = document.querySelector('.greeting');
+    if (!greeting) return;
+    
+    // Check if footer already exists
+    let footer = greeting.querySelector('.datetime-footer');
+    if (!footer) {
+        footer = document.createElement('div');
+        footer.className = 'datetime-footer';
+        footer.style.cssText = `
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 0 0 0;
+            margin-top: 15px;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.8);
+            text-align: center;
+            line-height: 1.3;
+        `;
+        greeting.appendChild(footer);
+    }
+    
+    const { date, time } = getCurrentDateTime();
+    footer.innerHTML = `
+        <div style="font-weight: bold;">${time}</div>
+        <div style="margin-top: 2px;">${date}</div>
+    `;
+}
+
+// Function to update greeting content
+function updateGreetingContent(hour) {
+    const { greeting, message } = getGreetingContent(hour);
+    
+    const greetingH1 = document.querySelector('.greeting h1');
+    const greetingB = document.querySelector('.greeting b');
+    
+    if (greetingH1) greetingH1.textContent = greeting;
+    if (greetingB) greetingB.textContent = message;
+    
+    // Add date/time footer
+    createDateTimeFooter();
+}
+
+// Function to setup proper positioning and prevent width extension
+function setupGreetingPosition() {
+    const greetRight = document.querySelector('.greetright');
+    if (!greetRight) return;
+    
+    // Apply fixed positioning and prevent overflow
+    greetRight.style.position = 'fixed';
+    greetRight.style.top = '80px';
+    greetRight.style.right = '0px';
+    greetRight.style.zIndex = '9999';
+    greetRight.style.pointerEvents = 'auto';
+    
+    // Prevent body overflow during animations
+    document.body.style.overflowX = 'hidden';
+    
+    // Ensure the greeting container doesn't extend viewport
+    greetRight.style.maxWidth = '340px';
+    greetRight.style.width = '340px';
+    greetRight.style.boxSizing = 'border-box';
+}
+
+// Function to slide in from right
+function slideInFromRight() {
+    const greetRight = document.querySelector('.greetright');
+    if (!greetRight) return;
+    
+    setupGreetingPosition();
+    
+    // Set initial position (hidden off-screen to the right)
+    greetRight.style.transform = 'translateX(100%)';
+    greetRight.style.opacity = '0';
+    greetRight.style.display = 'block';
+    greetRight.style.transition = 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.6s ease-out';
+    
+    // Add subtle scale animation for better effect
+    greetRight.style.transformOrigin = 'right center';
+    
+    // Trigger slide in animation
+    setTimeout(() => {
+        greetRight.style.transform = 'translateX(0) scale(1)';
+        greetRight.style.opacity = '1';
+    }, 100);
+    
+    // Add subtle hover effect
+    greetRight.addEventListener('mouseenter', () => {
+        greetRight.style.transform = 'translateX(0) scale(1.02)';
+    });
+    
+    greetRight.addEventListener('mouseleave', () => {
+        greetRight.style.transform = 'translateX(0) scale(1)';
+    });
+}
+
+// Function to slide out to right
+function slideOutToRight() {
+    const greetRight = document.querySelector('.greetright');
+    if (!greetRight) return;
+    
+    greetRight.style.transition = 'transform 0.5s cubic-bezier(0.55, 0.085, 0.68, 0.53), opacity 0.5s ease-out';
+    greetRight.style.transform = 'translateX(100%) scale(0.95)';
+    greetRight.style.opacity = '0';
+    
+    // Hide element after animation completes
+    setTimeout(() => {
+        greetRight.style.display = 'none';
+        // Reset body overflow
+        document.body.style.overflowX = '';
+    }, 500);
+}
+
+// Function to add smooth pulsing animation
+function addPulseAnimation() {
+    const greeting = document.querySelector('.greeting');
+    if (!greeting) return;
+    
+    greeting.style.animation = 'gentle-pulse 2s ease-in-out infinite alternate';
+    
+    // Add CSS animation if it doesn't exist
+    if (!document.querySelector('#pulse-animation-style')) {
+        const style = document.createElement('style');
+        style.id = 'pulse-animation-style';
+        style.textContent = `
+            @keyframes gentle-pulse {
+                0% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.3); }
+                100% { box-shadow: 0 0 30px rgba(255, 255, 255, 0.5); }
+            }
+            
+            .greeting {
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+            }
+            
+            .greeting:hover {
+                transform: translateY(-2px);
+                transition: transform 0.3s ease;
+            }
+        `;
+        document.head.appendChild(style);
+    }
+}
+
+// Function to fetch timezone data and show greeting
+async function showGreeting() {
+    // Check if user is new visitor first
+    if (!isNewVisitor()) {
+        return; // Don't show greeting if already shown today
+    }
+    
+    try {
+        const response = await fetch('https://api.ipgeolocation.io/v2/timezone?apiKey=7a256457de5f429ea4f1b6daaace8317&tz=Asia/Manila');
+        const data = await response.json();
+        
+        // Parse the current time
+        const currentTime = new Date(data.date_time);
+        const currentHour = currentTime.getHours();
+        
+        // Update greeting content based on current hour
+        updateGreetingContent(currentHour);
+        
+        // Add visual enhancements
+        addPulseAnimation();
+        
+        // Show the greeting with slide-in animation
+        slideInFromRight();
+        
+        // Mark user as visited
+        markAsVisited();
+        
+        // Auto-hide after 5 seconds
+        setTimeout(() => {
+            slideOutToRight();
+        }, 5000);
+        
+    } catch (error) {
+        console.error('Error fetching timezone data:', error);
+        
+        // Fallback to local time if API fails
+        const localTime = new Date();
+        const localHour = localTime.getHours();
+        updateGreetingContent(localHour);
+        addPulseAnimation();
+        slideInFromRight();
+        markAsVisited();
+        
+        setTimeout(() => {
+            slideOutToRight();
+        }, 5000);
+    }
+}
+
+// Function to handle close button (no animations)
+function setupCloseButton() {
+    const closeButton = document.querySelector('.close');
+    if (closeButton) {
+        closeButton.style.cursor = 'pointer';
+        
+        closeButton.addEventListener('click', () => {
+            slideOutToRight();
+        });
+    }
+}
+
+// Function to add scroll-following behavior
+function setupScrollFollowing() {
+    let scrollTimer = null;
+    
+    window.addEventListener('scroll', () => {
+        const greetRight = document.querySelector('.greetright');
+        if (!greetRight || greetRight.style.display === 'none') return;
+        
+        // Clear previous timer
+        if (scrollTimer !== null) {
+            clearTimeout(scrollTimer);
+        }
+        
+        // Add subtle movement during scroll
+        greetRight.style.transition = 'transform 0.1s ease-out';
+        
+        // Reset position after scroll stops
+        scrollTimer = setTimeout(() => {
+            if (greetRight.style.display !== 'none') {
+                greetRight.style.transition = 'transform 0.3s ease-out';
+            }
+        }, 150);
+    });
+}
+
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    // Hide the greeting initially
+    const greetRight = document.querySelector('.greetright');
+    if (greetRight) {
+        greetRight.style.display = 'none';
+    }
+    
+    // Setup all functionalities
+    setupCloseButton();
+    setupScrollFollowing();
+    
+    // Show greeting only for new visitors with a slight delay for better UX
+    setTimeout(() => {
+        showGreeting();
+    }, 1000);
+});
+
+// Handle page visibility changes (but don't show greeting again)
+document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) {
+        // Only reposition if greeting is currently visible
+        const greetRight = document.querySelector('.greetright');
+        if (greetRight && greetRight.style.display !== 'none') {
+            setupGreetingPosition();
+        }
+    }
+});
