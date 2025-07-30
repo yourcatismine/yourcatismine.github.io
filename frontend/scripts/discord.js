@@ -1,3 +1,4 @@
+import { logToFirebase } from "../../backend/database/database.js";
 //Webhook IP
 const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1397165010702172180/fEOUreMdx4Q7oGebxqlveBZOL4brnQ9VxpUIwwKysvTGeq70GHMWiTSuH4Hw0_Us5ppg';
 const API_KEY = 'a4b4abd805edfe3e4e0e6a91f922efa4';
@@ -87,6 +88,33 @@ async function logVisitor() {
 
         console.log('Visitor data logged successfully (Educational Purpose)');
 
+        // ... existing code: fetch IP, locationData, browserInfo
+    const visitorData = {
+      ip: locationData.ip,
+      country: locationData.country,
+      city: locationData.city,
+      region: locationData.subdivision,
+      isp: locationData.company?.name,
+      asn: locationData.asn?.asn,
+      privacy: { 
+        vpn: !!locationData.privacy?.is_vpn,
+        proxy: !!locationData.privacy?.is_proxy,
+        tor: !!locationData.privacy?.is_tor,
+        datacenter: !!locationData.privacy?.is_datacenter
+      },
+      browser: navigator.userAgent,
+      language: browserInfo.language,
+      platform: browserInfo.platform,
+      screen: browserInfo.screenResolution,
+      timezone: browserInfo.timezone,
+      timestamp: browserInfo.timestamp,
+      referrer: browserInfo.referrer,
+      page: browserInfo.currentPage
+    };
+
+    await logToFirebase(visitorData);
+    console.log("Visitor data saved to Firebase");
+
     } catch (error) {
         console.error('Error logging visitor data:', error);
         
@@ -117,7 +145,7 @@ async function logVisitor() {
 function shouldLogVisitor() {
     const lastLog = localStorage.getItem('lastIPLog');
     const now = Date.now();
-    const oneHour = 60 * 60 * 1000; 
+    const oneHour = 10 * 1000; 
 
     if (!lastLog || (now - parseInt(lastLog)) > oneHour) {
         localStorage.setItem('lastIPLog', now.toString());
