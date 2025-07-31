@@ -28,61 +28,104 @@ $_SESSION['last_activity'] = time();
 $username = $_SESSION['username'];
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../styles/adminpage.css"/>
-    <script type="module" src="../scripts/server.js"></script>
-    <title>Admin Dashboard</title>
-</head>
-<body>
-    <div class="header">
-    <h1>Dashboard</h1>
-    <div class="user-info">
-        <span>Welcome, <?php echo htmlspecialchars($username); ?>!</span>
-        <form method="POST" style="display: inline;">
-            <button type="submit" name="logout" class="logout-btn">Logout</button>
-           </form>
+<!-- Include Bootstrap CSS & icons -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet"/>
+<link rel="stylesheet" href="../styles/adminpage.css">
+<script type="module" src="../scripts/loggininfos.js"></script>
+
+<div class="d-flex">
+  <!-- Sidebar -->
+  <nav id="sidebar" class="bg-white border-end vh-100 position-fixed">
+    <div class="sidebar-header p-3">
+      <h4>Dashboard</h4>
+      <button id="toggle-btn" class="btn d-md-none"><i class="bi bi-list"></i></button>
+    </div>
+    <ul class="nav flex-column">
+      <li class="nav-item"><a href="#" class="nav-link"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+      <li class="nav-item"><a href="#" class="nav-link"><i class="bi bi-newspaper"></i> Schedules</a></li>
+      <li class="nav-item"><a href="#" class="nav-link"><i class="bi bi-flag"></i> News</a></li>
+    </ul>
+  </nav>
+
+  <!-- Content wrapper -->
+  <div class="flex-grow-1" style="margin-left: 250px;">
+    <header class="navbar navbar-light bg-light border-bottom">
+      <div class="container-fluid">
+        <h1 class="navbar-text">Welcome, <?= htmlspecialchars($username) ?>!</h1>
+        <form method="POST"><button name="logout" class="btn btn-outline-secondary">Logout</button></form>
+      </div>
+    </header>
+
+    <main class="p-4">
+      <!-- Stat cards -->
+        <div class="row mb-4">
+              <div class="col-md-3 mb-3">
+        <div class="card shadow-sm">
+          <div class="card-body text-center">
+            <h5><span id="visitor-count" class="odometer">0</span></h5>
+            <p>Total Views</p>
+          </div>
         </div>
+      </div>
+
+              <div class="col-md-3 mb-3">
+        <div class="card shadow-sm">
+          <div class="card-body text-center">
+            <h5 id="projects-counter">0</h5>
+            <p>Total Projects</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-3">
+        <div class="card shadow-sm">
+          <div class="card-body text-center">
+            <h5 id="languages-counter">0</h5>
+            <p>Total Languages</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 mb-3">
+        <div class="card shadow-sm">
+          <div class="card-body text-center">
+            <h5 id="github-counter">0</h5>
+            <p>GitHub Projects</p>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="visitors">
-  <div class="visitor-details">
-    <h1>Visitors</h1>
-    <div class="visitor-header">
-      <span>IP Address</span>
-      <span>Platform</span>
-      <span>Country</span>
-      <span>City</span>
-      <span>Region</span>
-      <span>Page</span>
-      <span>Time</span>
-    </div>
-    <div id="visitor-list"></div>
-    </div>
-    </div>
+      <!-- Table -->
+      <div class="card table-card mb-4">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <h4 class="mb-0">Visitors</h4>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-striped table-hover mb-0">
+      <thead>
+        <tr>
+          <th>IP Address</th>
+          <th>Platform</th>
+          <th>Country</th>
+          <th>City</th>
+          <th>Region</th>
+          <th>Time</th>
+          <th>Browser</th>
+        </tr>
+      </thead>
+      <tbody id="visitor-table-body">
+      </tbody>
+    </table>
+  </div>
+</div>
+    </main>
+  </div>
+</div>
 
-    <!--
- <div class="addusers">
-     <h1>Add Users</h1>
-     <form id="add-user-form">
-         <label for="username">Username:</label>
-         <input type="text" id="username" name="username" required>
-         <br>
-         <label for="password">Password:</label>
-         <input type="password" id="password" name="password" required>
-         <br>
-         <label for="role">Role:</label>
-         <select id="role" name="role" required>
-             <option value="admin">Admin</option>
-             <option value="user">User</option>
-         </select>
-         <br>
-         <button type="submit">Add User</button>
-     </form>
- </div> -->
-
-</body>
-</html>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Toggle sidebar on mobile
+  document.getElementById('toggle-btn').addEventListener('click', ()=>{
+    document.getElementById('sidebar').classList.toggle('d-none');
+  });
+</script>
