@@ -64,24 +64,25 @@ $username = $_SESSION['username'];
     </div>
     </div>
 
-    <div class="addusers">
-        <h1>Add Users</h1>
-        <form id="add-user-form">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
-            <br>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
-            <br>
-            <label for="role">Role:</label>
-            <select id="role" name="role" required>
-                <option value="admin">Admin</option>
-                <option value="user">User</option>
-            </select>
-            <br>
-            <button type="submit">Add User</button>
-        </form>
-    </div>
+    <!--
+ <div class="addusers">
+     <h1>Add Users</h1>
+     <form id="add-user-form">
+         <label for="username">Username:</label>
+         <input type="text" id="username" name="username" required>
+         <br>
+         <label for="password">Password:</label>
+         <input type="password" id="password" name="password" required>
+         <br>
+         <label for="role">Role:</label>
+         <select id="role" name="role" required>
+             <option value="admin">Admin</option>
+             <option value="user">User</option>
+         </select>
+         <br>
+         <button type="submit">Add User</button>
+     </form>
+ </div> -->
 
 </body>
 </html>
