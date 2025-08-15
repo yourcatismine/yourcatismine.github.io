@@ -1,777 +1,216 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en" data-bs-theme="dark">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Portfolio</title>
-    <link rel="stylesheet" href="/frontend/styles/style.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-    />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap"
-      rel="stylesheet"
-    />
-    <style>
-      html {
-        scroll-behavior: smooth;
-      }
-    </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Diego • Portfolio</title>
+    <meta name="description" content="Diego's dark UX portfolio—modern web projects, skills, and contact.">
+    <meta name="theme-color" content="#0a0a0a">
+    <meta property="og:title" content="Diego • Portfolio">
+    <meta property="og:description" content="Modern dark UI/UX portfolio built with Bootstrap 5.">
+    <meta property="og:type" content="website">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/theme.css">
   </head>
-  <body>
-    <!-- Navigation -->
-    <div class="navigation">
-      <div class="nav">
-        <div class="profile"><h1>DRY</h1></div>
-        <ul>
-          <li>
-            <a href="https://www.facebook.com/m0nsterssss"
-              ><i class="fa-brands fa-facebook"></i
-            ></a>
-            <!-- Facebook -->
-          </li>
-          <li>
-            <a href="https://github.com/yourcatismine"
-              ><i class="fa-solid fa-code"></i
-            ></a>
-          </li>
-          <li>
-            <a href="#schools"><i class="fa-solid fa-book"></i></a>
-          </li>
-        </ul>
+  <body class="no-scroll">
+    <!-- Loader overlay -->
+    <div id="loader" aria-live="polite" aria-busy="true">
+      <div class="loader-inner">
+        <span id="loader-text">Bonjour</span>
       </div>
     </div>
-
-    <!-- Greeting Pop Up Message Right -->
-  <div class="greetright">
-    <div class="greeting">
-      <div class="close">
-        <i class="fa-solid fa-x"></i>
+    <!-- Navbar (sticky at top) -->
+  <nav class="navbar navbar-dark bg-dark navbar-expand-md sticky-top shadow-sm">
+      <div class="container-xxl">
+        <a class="navbar-brand fw-bold" href="#">Diego</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="nav">
+          <ul class="navbar-nav mx-auto align-items-center gap-3">
+            <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+            <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
+            <li class="nav-item"><a class="nav-link" href="#experience">Experience</a></li>
+          </ul>
+          <a class="btn btn-glass btn-sm ms-auto ms-md-3" href="https://github.com/yourcatismine" target="_blank"><i class="fa-brands fa-github me-1"></i>GitHub</a>
+        </div>
       </div>
-      <div class="greettext">
-        <h1></h1> <!-- Good Morning, ETC -->
-        <b></b> <!-- Random Messages I Hope You have a great day ETC Example -->
+    </nav>
+
+    <!-- Hero -->
+    <header class="hero text-center container-xxl" data-reveal>
+      <span class="badge rounded-pill badge-brand">Open to work</span>
+      <div id="console" class="mt-3 mb-2 mx-auto"></div>
+      <p class="lead mx-auto" style="max-width:920px">I love to code and this is my hobby every day, and every moment.</p>
+      <div class="d-flex justify-content-center gap-2 mt-3">
+        <a href="#projects" class="btn btn-outline-light btn-cta btn-lg">View Projects <span class="chev">→</span></a>
+        <a href="https://www.facebook.com/m0nsterssss" class="btn btn-facebook btn-lg" target="_blank" aria-label="Facebook"><i class="fa-brands fa-facebook me-1" aria-hidden="true"></i> Facebook</a>
       </div>
-    </div>
-  </div>
+    </header>
 
-    <!-- Big Text With Typewriter -->
-    <div class="display">
-      <div class="title-text">
-        <h1 class="typewriter"><span id="type"></span></h1>
+    <!-- About -->
+    <section id="about" class="container-xxl py-5" data-reveal>
+      <div class="section-title"><h2 class="m-0">About</h2><span class="rule"></span></div>
+      <div class="row g-4 align-items-center">
+        <div class="col-md-5 text-center">
+          <img src="/frontend/images/Diego.jpg" alt="Portrait" class="rounded-circle shadow" style="width:220px;height:220px;object-fit:cover">
+        </div>
+        <div class="col-md-7">
+          <p class="fs-5 text-secondary">I’m Diego (Shaun). I love to code and build things. I do random projects in my spare time. This is my hobby. I want to reach a point where I can create anything I imagine.</p>
+          <ul class="list-unstyled small text-secondary">
+            <li class="mb-2"><i class="fa-solid fa-check text-light me-2"></i>Focused on performance, accessibility, and smooth UX</li>
+            <li class="mb-2"><i class="fa-solid fa-check text-light me-2"></i>JavaScript, HTML/CSS, C#, PHP, SQL, and Laravel learner</li>
+            <li class="mb-2"><i class="fa-solid fa-check text-light me-2"></i>I like Kiara.</li>
+          </ul>
+        </div>
       </div>
-      <b>
-        Hi there 👋, welcome to my portfolio! I'm Diego!, but my family
-        calls me Shaun.<br />
-        I'm a developer and I graduated from Bacongco National High School.<br />
-        My goal is to become a Full Stack Developer, and it's my dream to become
-        a millionaire!<br />
-        Now, let's scroll down to learn more about me 😄
-      </b>
-    </div>
+    </section>
 
-    <!-- Arrow Icon Down -->
-    <div id="schools" class="alignarrow">
-      <h1><i class="fa-solid fa-arrow-down"></i></h1>
-    </div>
-
-    <!-- My Informations -->
-
-    <div class="line">
-      <div class="scroll">
-        <div class="informations">
-          <!-- Dream Land -->
-          <div class="infolist">
-            <img src="/frontend/images/mda.png" />
-            <div class="showtext">
-              <div>
-                <h1 class="schoolname">Marbel Dreamland Academy</h1>
-                <b class="schooldesc"
-                  >From Nursery to Grade 2, then came back in Grade 5.
-                  (Finished)</b
-                >
+    <!-- Projects -->
+    <section id="projects" class="container-xxl py-5" data-reveal>
+      <div class="section-title"><h2 class="m-0">Featured Projects</h2><span class="rule"></span></div>
+      <div class="row g-4 row-cols-1 row-cols-md-2 row-cols-lg-3">
+        <div class="col">
+          <div class="card h-100">
+            <img class="card-img-top" src="/frontend/images/minecraftbot.png" alt="Minecraft Bot">
+            <div class="card-body">
+              <div class="d-flex align-items-center gap-2 mb-2">
+                <div class="project-icon"><i class="fa-solid fa-robot"></i></div>
+                <h5 class="card-title m-0">Minecraft Bedrock Bot</h5>
               </div>
+              <p class="card-subtitle">Relays in‑game chat to Discord; logging and automation.</p>
             </div>
           </div>
-
-          <!-- Osita Elementary School-->
-          <div class="infolist">
-            <img src="/frontend/images/osita.png" />
-            <div class="showtext">
-              <div>
-                <h1 class="schoolname">Osita Central Elementary School</h1>
-                <b class="schooldesc">From Grade 3 to Grade 4 (Finished)</b>
+        </div>
+        <div class="col">
+          <div class="card h-100">
+            <img class="card-img-top" src="/frontend/images/discordmod.png" alt="Discord Bot">
+            <div class="card-body">
+              <div class="d-flex align-items-center gap-2 mb-2">
+                <div class="project-icon"><i class="fa-brands fa-discord"></i></div>
+                <h5 class="card-title m-0">Discord Bot Developer</h5>
               </div>
+              <p class="card-subtitle">Discord moderations bot developer. All in one Discord Bot</p>
             </div>
           </div>
-
-          <!-- KNCHS ONLINE-->
-          <div class="infolist">
-            <img src="/frontend/images/knchs.png" />
-            <div class="showtext">
-              <div>
-                <h1 class="schoolname">
-                  Koronadal National Comprehensive High School
-                </h1>
-                <b class="schooldesc"
-                  >From Grade 6 Modular to Grade 7 Online Class (Finished)</b
-                >
+        </div>
+        <div class="col">
+          <div class="card h-100">
+            <img class="card-img-top" src="/frontend/images/web.png" alt="Portfolio">
+            <div class="card-body">
+              <div class="d-flex align-items-center gap-2 mb-2">
+                <div class="project-icon"><i class="fa-solid fa-code"></i></div>
+                <h5 class="card-title m-0">This Portfolio</h5>
               </div>
+              <p class="card-subtitle">Bootstrapped, responsive, and performance‑focused.</p>
             </div>
           </div>
-
-          <!-- BNHS -->
-          <div class="infolist">
-            <img src="/frontend/images/bnhs.png" />
-            <div class="showtext">
-              <div>
-                <h1 class="schoolname">Bacongco National Highschool</h1>
-                <b class="schooldesc">From Grade 8 to 10 (Finished)</b>
+        </div>
+        <div class="col">
+          <div class="card h-100">
+            <img class="card-img-top" src="/frontend/images/firstcapstone.png" alt="Portfolio">
+            <div class="card-body">
+              <div class="d-flex align-items-center gap-2 mb-2">
+                <div class="project-icon"><i class="fa-solid fa-home"></i></div>
+                <h5 class="card-title m-0">First Capstone</h5>
               </div>
-            </div>
-          </div>
-
-          <!-- STI -->
-          <div class="infolist">
-            <img src="/frontend/images/STI.png" />
-            <div class="showtext">
-              <div>
-                <h1 class="schoolname">S.T.I</h1>
-                <b class="schooldesc">Upcoming this July ( Grade 11 )</b>
-              </div>
-            </div>
-          </div>
-
-          <!-- Dream Land -->
-          <div class="infolist">
-            <img src="/frontend/images/mda.png" />
-            <div class="showtext">
-              <div>
-                <h1 class="schoolname">Marbel Dreamland Academy</h1>
-                <b class="schooldesc"
-                  >From Nursery to Grade 2, then came back in Grade 5.
-                  (Finished)</b
-                >
-              </div>
-            </div>
-          </div>
-
-          <!-- Osita Elementary School-->
-          <div class="infolist">
-            <img src="/frontend/images/osita.png" />
-            <div class="showtext">
-              <div>
-                <h1 class="schoolname">Osita Central Elementary School</h1>
-                <b class="schooldesc">From Grade 3 to Grade 4 (Finished)</b>
-              </div>
-            </div>
-          </div>
-
-          <!-- KNCHS ONLINE-->
-          <div class="infolist">
-            <img src="/frontend/images/knchs.png" />
-            <div class="showtext">
-              <div>
-                <h1 class="schoolname">
-                  Koronadal National Comprehensive High School
-                </h1>
-                <b class="schooldesc"
-                  >From Grade 6 Modular to Grade 7 Online Class (Finished)</b
-                >
-              </div>
-            </div>
-          </div>
-
-          <!-- BNHS -->
-          <div class="infolist">
-            <img src="/frontend/images/bnhs.png" />
-            <div class="showtext">
-              <div>
-                <h1 class="schoolname">Bacongco National Highschool</h1>
-                <b class="schooldesc">From Grade 8 to 10 (Finished)</b>
-              </div>
-            </div>
-          </div>
-
-          <!-- STI -->
-          <div class="infolist">
-            <img src="/frontend/images/STI.png" />
-            <div class="showtext">
-              <div>
-                <h1 class="schoolname">S.T.I</h1>
-                <b class="schooldesc">Upcoming this July ( Grade 11 )</b>
-              </div>
+              <p class="card-subtitle">My first capstone project. Laravel and PHP. With Google and Github Link, and Gmail OTP Sender ( Not Finished )</p>
             </div>
           </div>
         </div>
       </div>
+    </section>
 
-      <div class="fade-left"></div>
-      <div class="fade-right"></div>
-    </div>
-
-    <!--My Project Lists-->
-    <div id="projects" class="projects">
-      <div class="projectlists">
-        <div class="projectproject">
-        <h1 class="projecttext">My Projects</h1>
-        <b class="projectdesc"
-          >These are just some of the random projects I've enjoyed programming
-          over time.</b
-        >
+    <!-- Crush 03/01/23 -->
+    <section id="crush" class="container-xxl py-5" data-reveal>
+      <div class="section-title"><h2 class="m-0">Kiara</h2><span class="rule"></span></div>
+      <!-- Add class 'is-round' on .crush-card to make the photo rounded-circle -->
+  <div class="crush-card" id="crushCard" data-audio="/frontend/sounds/kiara.mp3">
+        <div class="crush-photo" id="crushPhoto" data-images="/frontend/images/kia5.jpg, /frontend/images/kia.jpg, /frontend/images/kia2.jpg, /frontend/images/kia3.jpg, /frontend/images/kia4.jpg, /frontend/images/kiara.png">
+          <img id="crushImg" src="/frontend/images/kiara.png" alt="Kiara portrait" draggable="false">
+          <div class="img-guard" id="crushGuard" aria-hidden="true"></div>
+          <button class="crush-nav prev" id="crushPrev" aria-label="Previous photo"><i class="fa-solid fa-chevron-left"></i></button>
+          <button class="crush-nav next" id="crushNext" aria-label="Next photo"><i class="fa-solid fa-chevron-right"></i></button>
+          <div class="crush-dots" id="crushDots" role="tablist" aria-label="Crush photos"></div>
         </div>
-        <div class="whitelineproject"></div>
-
-        <div class="projectbackground">
-          <!--Minecraft Bot-->
-          <div class="eachproject">
-            <img src="/frontend/images/minecraft.png" alt="Minecraft" />
-            <div class="projectinfo">
-              <h1 class="projectname">Minecraft Bedrock Bot</h1>
-              <b class="filedesc">
-                A Minecraft bot that relays all in-game chat to external logging
-                channels, such as Discord channels, using a Discord bot.
-              </b>
+        <div class="crush-content">
+          <span class="since" id="crushSince" data-since="2023-03-01">Since Mar 01, 2023</span>
+          <div class="crush-audio">
+            <button id="crushPlay" class="crush-audio-btn" aria-label="Play" aria-pressed="false">
+              <i class="fa-solid fa-play"></i>
+            </button>
+            <div class="crush-player" aria-label="Mini player">
+              <div class="track-title" id="crushTitle">Audio</div>
+              <input type="range" id="crushSeek" min="0" value="0" step="0.1" aria-label="Seek">
+              <div class="time" id="crushTime">0:00 / 0:00</div>
             </div>
+            <audio id="crushAudio" preload="metadata"></audio>
           </div>
+          <h3 class="name">Kiara <span class="heart" aria-hidden="true"><i class="fa-solid fa-heart"></i></span></h3>
+          <p class="desc">My crush since 03/01/23. She's amazing!</p>
+          <p class="quote">— "Your smile makes my day."</p>
+        </div>
+        <div class="bg-heart" aria-hidden="true"></div>
+      </div>
+    </section>
 
-          <!--Discord Bot-->
-          <div class="eachproject">
-            <img src="/frontend/images/discord.png" alt="Discord" />
-            <div class="projectinfo">
-              <h1 class="projectname">Discord Bot</h1>
-              <b class="filedesc">
-                A Discord bot that moderates servers. It handles tasks like
-                auto-moderation, filtering, and user management.
-              </b>
-            </div>
-          </div>
+    <!-- Experience/Skills -->
+    <section id="experience" class="container-xxl py-5" data-reveal>
+      <div class="section-title"><h2 class="m-0">Skills</h2><span class="rule"></span></div>
+      <div class="row g-3 row-cols-2 row-cols-md-4 row-cols-xl-6">
+        <div class="col"><div class="card p-3 text-center h-100"><img src="/frontend/images/js.png" alt="JavaScript" style="height:64px" class="mx-auto"><div class="mt-2 fw-semibold">JavaScript</div></div></div>
+        <div class="col"><div class="card p-3 text-center h-100"><img src="/frontend/images/html.png" alt="HTML" style="height:64px" class="mx-auto"><div class="mt-2 fw-semibold">HTML</div></div></div>
+        <div class="col"><div class="card p-3 text-center h-100"><img src="/frontend/images/css.png" alt="CSS" style="height:64px" class="mx-auto"><div class="mt-2 fw-semibold">CSS</div></div></div>
+        <div class="col"><div class="card p-3 text-center h-100"><img src="/frontend/images/csharp.png" alt="C#" style="height:64px" class="mx-auto"><div class="mt-2 fw-semibold">C#</div></div></div>
+        <div class="col"><div class="card p-3 text-center h-100"><img src="/frontend/images/discord.png" alt="Discord" style="height:64px" class="mx-auto"><div class="mt-2 fw-semibold">Discord Bots</div></div></div>
+        <div class="col"><div class="card p-3 text-center h-100"><img src="/frontend/images/minecraft.png" alt="Minecraft" style="height:64px" class="mx-auto"><div class="mt-2 fw-semibold">Game Bots</div></div></div>
+        <div class="col"><div class="card p-3 text-center h-100"><img src="/frontend/images/laravel.png" alt="Laravel" style="height:64px" class="mx-auto"><div class="mt-2 fw-semibold">Laravel</div></div></div>
+        <div class="col"><div class="card p-3 text-center h-100"><img src="/frontend/images/php.png" alt="PHP" style="height:64px" class="mx-auto"><div class="mt-2 fw-semibold">PHP</div></div></div>
+        <div class="col"><div class="card p-3 text-center h-100"><img src="/frontend/images/sql.jpg" alt="SQL" style="height:64px" class="mx-auto"><div class="mt-2 fw-semibold">SQL</div></div></div>
+      </div>
+    </section>
 
-          <!--Minecraft Bot Raider-->
-          <div class="eachproject">
-            <img src="/frontend/images/discord.png" alt="Bot Raider" />
-            <div class="projectinfo">
-              <h1 class="projectname">Minecraft Discord Bot</h1>
-              <b class="filedesc">
-                A Discord bot that executes commands to spam or crash Minecraft
-                Realms and servers. (Note: This is for educational or testing
-                purposes only.)
-              </b>
-            </div>
-          </div>
-
-          <!--First Web-->
-          <div class="eachproject">
-            <img src="/frontend/images/kiara.png" alt="First Web" />
-            <div class="projectinfo">
-              <h1 class="projectname">Kiara!</h1>
-              <b class="filedesc">
-                My first website, where I began learning HTML and CSS.
-              </b>
-            </div>
-          </div>
-
-          <!--Saturn Web-->
-          <div class="eachproject">
-            <img src="/frontend/images/saturn.png" alt="Saturn" />
-            <div class="projectinfo">
-              <h1 class="projectname">Saturn Web</h1>
-              <b class="filedesc">
-                My second web project for learning HTML and CSS. It took many
-                hours to build, but unfortunately, I didn’t finish it.
-              </b>
-            </div>
-          </div>
-
-          <!--Ender SMP-->
-          <div class="eachproject">
-            <img src="/frontend/images/endersmp.png" alt="EnderSMP" />
-            <div class="projectinfo">
-              <h1 class="projectname">Ender SMP</h1>
-              <b class="filedesc">
-                My third website, made for my Minecraft SMP server. It was
-                completed and hosted on Neocities, but later discontinued.
-              </b>
-            </div>
-          </div>
-
-          <!--Portfolio-->
-          <div class="eachproject">
-            <img src="/frontend/images/html.png" alt="Portfolio" />
-            <div class="projectinfo">
-              <h1 class="projectname">Portfolio</h1>
-              <b class="filedesc">
-                My fourth website — a portfolio project. I’m really proud of it,
-                as it shows how much I’ve progressed.
-              </b>
-            </div>
-          </div>
-
-          <!-- C Sharp Project -->
-          <div class="eachproject">
-            <img src="/frontend/images/csharp.png" alt="C Sharp Learning" />
-            <div class="projectinfo">
-              <h1 class="projectname">C Sharp Learning</h1>
-              <b class="filedesc">
-                First C Sharp Learning Project.
-              </b>
-            </div>
-          </div>
+    <!-- Footer -->
+    <footer class="site-footer container-xxl py-5">
+      <div class="footer-bar d-flex flex-column flex-md-row align-items-center justify-content-between gap-3">
+        <div class="brand">© Diego</div>
+        <div class="center">Diego Burgos</div>
+        <div class="social d-flex gap-2">
+          <a href="https://github.com/yourcatismine" class="social-btn" target="_blank" aria-label="GitHub">
+            <i class="fa-brands fa-github" aria-hidden="true"></i>
+          </a>
+          <a href="https://www.facebook.com/m0nsterssss" class="social-btn" target="_blank" aria-label="Facebook">
+            <i class="fa-brands fa-facebook" aria-hidden="true"></i>
+          </a><a href="https://www.instagram.com/yourcatishere_/" class="social-btn" target="_blank" aria-label="Instagram">
+            <i class="fa-brands fa-instagram" aria-hidden="true"></i>
+          </a>
         </div>
       </div>
+    </footer>
+
+    <!-- Back to top -->
+  <button id="toTop" class="btn btn-light position-fixed" style="right:18px;bottom:18px" aria-label="Back to top">
+      <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
+    <!-- Greeting toast (bottom-right) -->
+    <div id="greetToast" class="toast-greet" role="status" aria-live="polite" aria-atomic="true">
+      <button class="toast-close" id="greetClose" aria-label="Dismiss">×</button>
+      <div class="toast-inner">
+        <div class="icon" aria-hidden="true"><i id="greetIcon" class="fa-solid fa-sun"></i></div>
+        <div class="content">
+          <div class="tz">GMT+8</div>
+          <div class="msg" id="greetMsg">Hello</div>
+        </div>
+      </div>
+      <div class="progress" aria-hidden="true"></div>
     </div>
 
-    <!-- Laanguages -->
-    <div id="language" class="language">
-      <div class="languagelist">
-        <div class="textlang">
-          <h1 class="langtitle">My Langauges</h1>
-          <b class="langdesc">These are the languages I know</b>'
-          <div class="whitelinelang"></div>
-        </div>
-
-        <div class="eachbackground">
-          <!-- JavaScript -->
-          <div class="eachlanguage">
-            <img src="/frontend/images/js.png" />
-            <div class="langinfo">
-              <h1 class="langname">JavaScript</h1>
-            </div>
-          </div>
-
-          <!-- HTML -->
-          <div class="eachlanguage">
-            <img src="/frontend/images/html.png" />
-            <div class="langinfo">
-              <h1 class="langname">HTML</h1>
-            </div>
-          </div>
-
-          <!-- CSS -->
-          <div class="eachlanguage">
-            <img src="/frontend/images/css.png" />
-            <div class="langinfo">
-              <h1 class="langname">Cascading Style Sheets</h1>
-            </div>
-          </div>
-
-          <!-- C Sharp -->
-          <div class="eachlanguage">
-            <img src="/frontend/images/csharp.png" />
-            <div class="langinfo">
-              <h1 class="langname">C Sharp / C# (Learning)</h1>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Favorite Music -->
-     <div class="favbackground">
-      <div class="favoriteitems">
-        <div class="favtext">
-          <h1>Favorite Artists</h1>
-          <b class="favdesc">My Music Collection</b>
-        </div>
-        <div class="whiteline"></div>
-
-        <!-- Song Lists -->
-        <div class="favoritelist">
-          <div class="artists-container">
-            <!-- Cigarettes After Sex -->
-            <div class="artist-section">
-              <div class="favtext">
-                <h1>Cigarettes After Sex</h1>
-                <b class="favdesc">Songs</b>
-              </div>
-              <div class="whiteline"></div>
-              <div class="song-grid">
-                <!-- Each Song -->
-
-                <!-- 1. Apocolypse -->
-                <div class="song-item">
-                  <div class="song-number">1</div>
-                  <div class="song-image-container">
-                    <img src="/frontend/albums/CAS/Apocolypse.png" alt="Apocalypse" class="song-image"/>
-                    <div class="play-button" onclick="playSong('cas-apocolypse', '/frontend/musics/CAS/Apocalypse.mp3')">
-                      <i class="fa-solid fa-play"></i>
-                    </div>
-                  </div>
-                  <audio id="cas-apocolypse" src="/frontend/musics/CAS/Apocalypse.mp3"></audio>
-                  <div class="song-info">
-                    <div class="song-name">Apocolypse</div>
-                    <div class="song-artist">Cigarettes After Sex</div>
-                  </div>
-                  <div class="song-album">Cigarettes After Sex</div>
-                  <div class="song-duration">4:51</div>
-                </div>
-
-                <!-- 2. Sunsetz -->
-                <div class="song-item">
-                  <div class="song-number">2</div>
-                  <div class="song-image-container">
-                    <img src="/frontend/albums/CAS/Sunsetz.png" alt="Sunsetz" class="song-image"/>
-                    <div class="play-button" onclick="playSong('cas-sunsetz', '/frontend/musics/CAS/Sunsetz.mp3')">
-                      <i class="fa-solid fa-play"></i>
-                    </div>
-                  </div>
-                  <audio id="cas-sunsetz" src="/frontend/musics/CAS/Sunsetz.mp3"></audio>
-                  <div class="song-info">
-                    <div class="song-name">Sunsetz</div>
-                    <div class="song-artist">Cigarettes After Sex</div>
-                  </div>
-                  <div class="song-album">Cigarettes After Sex</div>
-                  <div class="song-duration">3:35</div>
-                </div>
-
-                <!-- 3. Stop Waiting -->
-                <div class="song-item">
-                  <div class="song-number">3</div>
-                  <div class="song-image-container">
-                    <img src="/frontend/albums/CAS/StopWaiting.png" alt="StopWaiting" class="song-image"/>
-                    <div class="play-button" onclick="playSong('cas-stopwaiting', '/frontend/musics/CAS/StopWaiting.mp3')">
-                      <i class="fa-solid fa-play"></i>
-                    </div>
-                  </div>
-                  <audio id="cas-stopwaiting" src="/frontend/musics/CAS/StopWaiting.mp3"></audio>
-                  <div class="song-info">
-                    <div class="song-name">Stop Waiting</div>
-                    <div class="song-artist">Cigarettes After Sex</div>
-                  </div>
-                  <div class="song-album">Bubble Gum</div>
-                  <div class="song-duration">6:03</div>
-                </div>
-
-                <!-- 4. K. -->
-                <div class="song-item">
-                  <div class="song-number">4</div>
-                  <div class="song-image-container">
-                    <img src="/frontend/albums/CAS/K.png" alt="K." class="song-image"/>
-                    <div class="play-button" onclick="playSong('cas-k', '/frontend/musics/CAS/K.mp3')">
-                      <i class="fa-solid fa-play"></i>
-                    </div>
-                  </div>
-                  <audio id="cas-k" src="/frontend/musics/CAS/K.mp3"></audio>
-                  <div class="song-info">
-                    <div class="song-name">K.</div>
-                    <div class="song-artist">Cigarettes After Sex</div>
-                  </div>
-                  <div class="song-album">Cigarettes After Sex</div>
-                  <div class="song-duration">5:18</div>
-                </div>
-
-                <!-- 5. Heavenly -->
-                <div class="song-item">
-                  <div class="song-number">5</div>
-                  <div class="song-image-container">
-                    <img src="/frontend/albums/CAS/Heavenly.png" alt="heavenly" class="song-image"/>
-                    <div class="play-button" onclick="playSong('cas-heavenly', '/frontend/musics/CAS/Heavenly.mp3')">
-                      <i class="fa-solid fa-play"></i>
-                    </div>
-                  </div>
-                  <audio id="cas-heavenly" src="/frontend/musics/CAS/Heavenly.mp3"></audio>
-                  <div class="song-info">
-                    <div class="song-name">Heavenly</div>
-                    <div class="song-artist">Cigarettes After Sex</div>
-                  </div>
-                  <div class="song-album">Cry</div>
-                  <div class="song-duration">4:47</div>
-                </div>
-
-                <!-- 6. Cry --> 
-                <div class="song-item">
-                  <div class="song-number">6</div>
-                  <div class="song-image-container">
-                    <img src="/frontend/albums/CAS/cas.png" alt="cry" class="song-image"/>
-                    <div class="play-button" onclick="playSong('cas-cry', '/frontend/musics/CAS/Cry.mp3')">
-                      <i class="fa-solid fa-play"></i>
-                    </div>
-                  </div>
-                  <audio id="cas-cry" src="/frontend/musics/CAS/Cry.mp3"></audio>
-                  <div class="song-info">
-                    <div class="song-name">Cry</div>
-                    <div class="song-artist">Cigarettes After Sex</div>
-                  </div>
-                  <div class="song-album">Cry</div>
-                  <div class="song-duration">4:17</div>
-                </div>
-
-                <!-- 7. Opera House --> 
-                <div class="song-item">
-                  <div class="song-number">7</div>
-                  <div class="song-image-container">
-                    <img src="/frontend/albums/CAS/OperaHouse.png" alt="operahouse" class="song-image"/>
-                    <div class="play-button" onclick="playSong('cas-operahouse', '/frontend/musics/CAS/OperaHouse.mp3')">
-                      <i class="fa-solid fa-play"></i>
-                    </div>
-                  </div>
-                  <audio id="cas-operahouse" src="/frontend/musics/CAS/OperaHouse.mp3"></audio>
-                  <div class="song-info">
-                    <div class="song-name">Opera House</div>
-                    <div class="song-artist">Cigarettes After Sex</div>
-                  </div>
-                  <div class="song-album">Cigarettes After Sex</div>
-                  <div class="song-duration">6:06</div>
-                </div>
-
-                <!-- 8. John Wayne --> 
-                <div class="song-item">
-                  <div class="song-number">8</div>
-                  <div class="song-image-container">
-                    <img src="/frontend/albums/CAS/JohnWayne.png" alt="johnwayne" class="song-image"/>
-                    <div class="play-button" onclick="playSong('cas-johnwayne', '/frontend/musics/CAS/JohnWayne.mp3')">
-                      <i class="fa-solid fa-play"></i>
-                    </div>
-                  </div>
-                  <audio id="cas-johnwayne" src="/frontend/musics/CAS/JohnWayne.mp3"></audio>
-                  <div class="song-info">
-                    <div class="song-name">John Wayne</div>
-                    <div class="song-artist">Cigarettes After Sex</div>
-                  </div>
-                  <div class="song-album">Cigarettes After Sex</div>
-                  <div class="song-duration">4:19</div>
-                </div>
-
-                <!-- 9. Keep On Loving You --> 
-                <div class="song-item">
-                  <div class="song-number">9</div>
-                  <div class="song-image-container">
-                    <img src="/frontend/albums/CAS/KeeponLovingYou.png" alt="keeponlovingyou" class="song-image"/>
-                    <div class="play-button" onclick="playSong('cas-keeponlovingyou', '/frontend/musics/CAS/KeeponLovingYou.mp3')">
-                      <i class="fa-solid fa-play"></i>
-                    </div>
-                  </div>
-                  <audio id="cas-keeponlovingyou" src="/frontend/musics/CAS/KeepOnLovingYou.mp3"></audio>
-                  <div class="song-info">
-                    <div class="song-name">Keep On Loving You</div>
-                    <div class="song-artist">Cigarettes After Sex</div>
-                  </div>
-                  <div class="song-album">Affection</div>
-                  <div class="song-duration">3:53</div>
-                </div>
-
-                <!-- 10. Touch --> 
-                <div class="song-item">
-                  <div class="song-number">10</div>
-                  <div class="song-image-container">
-                    <img src="/frontend/albums/CAS/cas.png" alt="touch" class="song-image"/>
-                    <div class="play-button" onclick="playSong('cas-touch', '/frontend/musics/CAS/Touch.mp3')">
-                      <i class="fa-solid fa-play"></i>
-                    </div>
-                  </div>
-                  <audio id="cas-touch" src="/frontend/musics/CAS/Touch.mp3"></audio>
-                  <div class="song-info">
-                    <div class="song-name">Touch</div>
-                    <div class="song-artist">Cigarettes After Sex</div>
-                  </div>
-                  <div class="song-album">Cry</div>
-                  <div class="song-duration">4:53</div>
-                </div>
-
-                <!-- 11. Nothings Gonna Hurt You Baby --> 
-                <div class="song-item">
-                  <div class="song-number">11</div>
-                  <div class="song-image-container">
-                    <img src="/frontend/albums/CAS/cas.png" alt="nothingsgonnahurtyoubaby" class="song-image"/>
-                    <div class="play-button" onclick="playSong('cas-nothingsgonnahurtyoubaby', '/frontend/musics/CAS/NothingsGonnaHurtYoubaby.mp3')">
-                      <i class="fa-solid fa-play"></i>
-                    </div>
-                  </div>
-                  <audio id="cas-nothingsgonnahurtyoubaby" src="/frontend/musics/CAS/NothingsGonnaHurtYouBaby.mp3"></audio>
-                  <div class="song-info">
-                    <div class="song-name">Nothings Gonna Hurt You Baby</div>
-                    <div class="song-artist">Cigarettes After Sex</div>
-                  </div>
-                  <div class="song-album">I.</div>
-                  <div class="song-duration">4:45</div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Vacations -->
-            <div class="artist-section">
-              <div class="favtext">
-                <h1>Vacations</h1>
-                <b class="favdesc">Songs</b>
-              </div>
-              <div class="whiteline"></div>
-              <div class="song-grid">
-
-                <!-- 1. Telephones -->
-                <div class="song-item">
-                  <div class="song-number">1</div>
-                  <div class="song-image-container">
-                    <img src="/frontend/albums/VACATIONS/Telephones.png" alt="Vacations" class="song-image"/>
-                    <div class="play-button" onclick="playSong('vac-vacations', '/frontend/musics/VACATIONS/Telephones.mp3')">
-                      <i class="fa-solid fa-play"></i>
-                    </div>
-                  </div>
-                  <audio id="vac-vacations" src="/frontend/musics/VACATIONS/Vacations.mp3"></audio>
-                  <div class="song-info">
-                    <div class="song-name">Telephones</div>
-                    <div class="song-artist">Vacations</div>
-                  </div>
-                  <div class="song-album">Vacations</div>
-                  <div class="song-duration">3:34</div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Radio Head -->
-            <div class="artist-section">
-              <div class="favtext">
-                <h1>RadioHead</h1>
-                <b class="favdesc">Songs</b>
-              </div>
-              <div class="whiteline"></div>
-              <div class="song-grid">
-
-                <!-- 1. Let Down -->
-                <div class="song-item">
-                  <div class="song-number">1</div>
-                  <div class="song-image-container">
-                    <img src="/frontend/albums/RADIOHEAD/LetDown.png" alt="Letdown" class="song-image"/>
-                    <div class="play-button" onclick="playSong('radio-letdown', '/frontend/musics/RADIOHEAD/LetDown.mp3')">
-                      <i class="fa-solid fa-play"></i>
-                    </div>
-                  </div>
-                  <audio id="radio-letdown" src="/frontend/musics/RADIOHEAD/LetDown.mp3"></audio>
-                  <div class="song-info">
-                    <div class="song-name">Let Down</div>
-                    <div class="song-artist">RadioHead</div>
-                  </div>
-                  <div class="song-album">RadioHead</div>
-                  <div class="song-duration">5:00</div>
-                </div>
-
-                <!-- 2. No Suprises -->
-                <div class="song-item">
-                  <div class="song-number">2</div>
-                  <div class="song-image-container">
-                    <img src="/frontend/albums/RADIOHEAD/NoSuprises.png" alt="Nosuprises" class="song-image"/>
-                    <div class="play-button" onclick="playSong('radio-nosuprises', '/frontend/musics/RADIOHEAD/NoSuprises.mp3')">
-                      <i class="fa-solid fa-play"></i>
-                    </div>
-                  </div>
-                  <audio id="radio-nosuprises" src="/frontend/musics/RADIOHEAD/NoSurprises.mp3"></audio>
-                  <div class="song-info">
-                    <div class="song-name">No Suprises</div>
-                    <div class="song-artist">RadioHead</div>
-                  </div>
-                  <div class="song-album">RadioHead</div>
-                  <div class="song-duration">3:48</div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Ricky Montgomery -->
-            <div class="artist-section">
-              <div class="favtext">
-                <h1>Ricky Montgomery</h1>
-                <b class="favdesc">Songs</b>
-              </div>
-              <div class="whiteline"></div>
-              <div class="song-grid">
-
-                <!-- 1. A Line Without A Hook -->
-                <div class="song-item">
-                  <div class="song-number">1</div>
-                  <div class="song-image-container">
-                    <img src="/frontend/albums/RickyMontgomery/LineWithoutAhook.png" alt="LineWithoutAhook" class="song-image"/>
-                    <div class="play-button" onclick="playSong('ricky-linewithoutahook', '/frontend/musics/RickyMontgomery/LineWithoutAHook.mp3')">
-                      <i class="fa-solid fa-play"></i>
-                    </div>
-                  </div>
-                  <audio id="ricky-linewithoutahook" src="/frontend/musics/RickyMontgomery/LineWithoutAHook.mp3"></audio>
-                  <div class="song-info">
-                    <div class="song-name">A Line Without A Hook</div>
-                    <div class="song-artist">Ricky Montgomery</div>
-                  </div>
-                  <div class="song-album">Ricky Montgomery</div>
-                  <div class="song-duration">4:33</div>
-                </div>
-
-                <!-- 2. Mr Loverman -->
-                <div class="song-item">
-                  <div class="song-number">2</div>
-                  <div class="song-image-container">
-                    <img src="/frontend/albums/RickyMontgomery/MrLoverman.png" alt="MrLoverman" class="song-image"/>
-                    <div class="play-button" onclick="playSong('ricky-mrloverman', '/frontend/musics/RickyMontgomery/MrLoverman.mp3')">
-                      <i class="fa-solid fa-play"></i>
-                    </div>
-                  </div>
-                  <audio id="ricky-mrloverman" src="/frontend/musics/RickyMontgomery/MrLoverman.mp3"></audio>
-                  <div class="song-info">
-                    <div class="song-name">Mr Loverman</div>
-                    <div class="song-artist">Ricky Montgomery</div>
-                  </div>
-                  <div class="song-album">Ricky Montgomery</div>
-                  <div class="song-duration">4:25</div>
-                </div>
-              </div>
-            </div>
-
-            <!-- The 1975 -->
-            <div class="artist-section">
-              <div class="favtext">
-                <h1>The 1975</h1>
-                <b class="favdesc">Songs</b>
-              </div>
-              <div class="whiteline"></div>
-              <div class="song-grid">
-
-                <!-- 1. About YOu -->
-                <div class="song-item">
-                  <div class="song-number">1</div>
-                  <div class="song-image-container">
-                    <img src="/frontend/albums/The1975/AboutYou.png" alt="AboutYou" class="song-image"/>
-                    <div class="play-button" onclick="playSong('the-aboutyou', '/frontend/musics/The1975/The1975.mp3')">
-                      <i class="fa-solid fa-play"></i>
-                    </div>
-                  </div>
-                  <audio id="the-aboutyou" src="/frontend/musics/The1975/The1975.mp3"></audio>
-                  <div class="song-info">
-                    <div class="song-name">About You</div>
-                    <div class="song-artist">The 1975</div>
-                  </div>
-                  <div class="song-album">The 1975</div>
-                  <div class="song-duration">5:27</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-     </div>
-
-    <!-- FOOTER --->
-    <div class="footer">
-      <div class="top">
-        <div class="logo">DRYER</div>
-        <div class="footernav">
-          <a href="#">HOME</a>
-          <a href="#projects">PROJECTS</a>
-          <a href="https://www.facebook.com/m0nsterssss">FACEBOOK</a>
-          <a href="https://github.com/yourcatismine">GITHUB</a>
-        </div>
-        <div class="socials">
-          <a href="https://github.com/yourcatismine"
-            ><i class="fa-solid fa-code"></i
-          ></a>
-          <a href="https://www.facebook.com/m0nsterssss"
-            ><i class="fa-brands fa-facebook"></i
-          ></a>
-          <a href="#schools"><i class="fa-solid fa-book"></i></a>
-        </div>
-      </div>
-      <div class="bottom">&copy;Copyright. All rights reserved.</div>
-    </div>
-    <script src="/frontend/scripts/musics.js"></script>
-    <script type="module" src="/frontend/scripts/discord.js"></script>
-    <script src="/frontend/scripts/greetings.js"></script>
-    <script src="/frontend/scripts/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/main.js"></script>
   </body>
 </html>
