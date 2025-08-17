@@ -418,3 +418,12 @@ img.rounded-circle{ border-radius:50% !important }
   0%, 100% { color: #fff; }
   50% { color: #e63946; text-shadow: 0 0 8px #e63946; }
 }
+
+.console {
+  transition: filter .2s ease, box-shadow .5s ease;
+}
+
+.console:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 0 12px 0 #424242;
+}

@@ -151,7 +151,8 @@
 const songs = [
   { src: '/frontend/sounds/Mabagal.mp3', title: 'Mabagal' },
   { src: '/frontend/sounds/Panaginip.mp3', title: 'Panaginip' },
-  { src: '/frontend/sounds/AboutYou.mp3', title: 'About You' }
+  { src: '/frontend/sounds/AboutYou.mp3', title: 'About You' },
+  { src: '/frontend/sounds/Museo.mp3', title: 'Museo' },
 ];
 let currentSong = 0;
 
@@ -488,8 +489,8 @@ document.getElementById('crushPrevSong').addEventListener('click', () => {
   const rateEl = document.getElementById('heartRateNum');
   if(!rateEl) return;
   function randomRate() {
-    // Romantic range: 100-200 bpm
-    return Math.floor(Math.random() * 101) + 100;
+    // Romantic range: 90-200 bpm
+    return Math.floor(Math.random() * 111) + 90;
   }
   function updateRate() {
     rateEl.textContent = randomRate();
