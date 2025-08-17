@@ -129,7 +129,7 @@
     <section id="crush" class="container-xxl py-5" data-reveal>
       <div class="section-title"><h2 class="m-0">Kiara</h2><span class="rule"></span></div>
       <!-- Add class 'is-round' on .crush-card to make the photo rounded-circle -->
-  <div class="crush-card" id="crushCard" data-audio="/frontend/sounds/kiara.mp3">
+  <div class="crush-card" id="crushCard" data-audio="/frontend/sounds/Mabagal.mp3">
         <div class="crush-photo" id="crushPhoto" data-images="/frontend/images/kia5.jpg, /frontend/images/kia.jpg, /frontend/images/kia2.jpg, /frontend/images/kia3.jpg, /frontend/images/kia4.jpg, /frontend/images/kiara.png">
           <img id="crushImg" src="/frontend/images/kiara.png" alt="Kiara portrait" draggable="false">
           <div class="img-guard" id="crushGuard" aria-hidden="true"></div>
@@ -140,8 +140,12 @@
         <div class="crush-content">
           <span class="since" id="crushSince" data-since="2023-03-01">Since Mar 01, 2023</span>
           <div class="crush-audio">
+            <button id="crushPrevSong" class="crush-audio-btn" aria-label="Previous" aria-pressed="false">  <i class="fa-solid fa-backward"></i></button>
             <button id="crushPlay" class="crush-audio-btn" aria-label="Play" aria-pressed="false">
               <i class="fa-solid fa-play"></i>
+            </button>
+            <button id="crushNextSong" class="crush-audio-btn" aria-label="Next" aria-pressed="false">
+            <i class="fa-solid fa-forward"></i>
             </button>
             <div class="crush-player" aria-label="Mini player">
               <div class="track-title" id="crushTitle">Audio</div>
@@ -150,9 +154,9 @@
             </div>
             <audio id="crushAudio" preload="metadata"></audio>
           </div>
-          <h3 class="name">Kiara <span class="heart" aria-hidden="true"><i class="fa-solid fa-heart"></i></span></h3>
-          <p class="desc">My crush since 03/01/23. She's amazing!</p>
-          <p class="quote">— "Your smile makes my day."</p>
+          <h3 class="name">Kiara <span class="heart-rate" aria-hidden="true"><i class="fa-solid fa-heart"></i><span class="rate-num" id="heartRateNum">0</span></span></h3>
+          <p class="desc">She is still the one even though she rejected me I am here willing to wait for her and I will promise my love for her will never fade even if it takes a lifetime until death.</p>
+          <p class="quote">— "The most pretty girl I've ever seen."</p>
         </div>
         <div class="bg-heart" aria-hidden="true"></div>
       </div>

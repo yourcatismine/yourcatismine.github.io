@@ -148,6 +148,30 @@
   }
 })();
 
+const songs = [
+  { src: '/frontend/sounds/Mabagal.mp3', title: 'Mabagal' },
+  { src: '/frontend/sounds/Panaginip.mp3', title: 'Panaginip' },
+  { src: '/frontend/sounds/AboutYou.mp3', title: 'About You' }
+];
+let currentSong = 0;
+
+function loadSong(index) {
+  const audio = document.getElementById('crushAudio');
+  const title = document.getElementById('crushTitle');
+  audio.src = songs[index].src;
+  title.textContent = songs[index].title;
+}
+
+document.getElementById('crushNextSong').addEventListener('click', () => {
+  currentSong = (currentSong + 1) % songs.length;
+  loadSong(currentSong);
+});
+
+document.getElementById('crushPrevSong').addEventListener('click', () => {
+  currentSong = (currentSong - 1 + songs.length) % songs.length;
+  loadSong(currentSong);
+});
+
 // Crush photo switcher
 (function(){
   const container = document.getElementById('crush');
@@ -457,4 +481,19 @@
   }
 
   render();
+})();
+
+
+(function romanticHeartRate(){
+  const rateEl = document.getElementById('heartRateNum');
+  if(!rateEl) return;
+  function randomRate() {
+    // Romantic range: 100-200 bpm
+    return Math.floor(Math.random() * 101) + 100;
+  }
+  function updateRate() {
+    rateEl.textContent = randomRate();
+  }
+  updateRate();
+  setInterval(updateRate, 1800); // update every 1.8s
 })();
