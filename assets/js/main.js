@@ -493,8 +493,25 @@ document.getElementById('crushPrevSong').addEventListener('click', () => {
     return Math.floor(Math.random() * 111) + 90;
   }
   function updateRate() {
-    rateEl.textContent = randomRate();
+    const rate = randomRate();
+    rateEl.textContent = rate;
+    // Heart icon pump speed and rate text color
+    const heartIcon = rateEl.parentElement && rateEl.parentElement.querySelector('i.fa-heart');
+    if(rate > 120) {
+      if(heartIcon) heartIcon.style.animationDuration = '0.7s'; // super fast
+      rateEl.style.color = '#e63946';
+      rateEl.style.textShadow = '0 0 8px #e63946';
+    } else if(rate >= 100) {
+      if(heartIcon) heartIcon.style.animationDuration = '1.1s'; // fast
+      rateEl.style.color = '#e63946';
+      rateEl.style.textShadow = '0 0 4px #e63946';
+    } else {
+      if(heartIcon) heartIcon.style.animationDuration = '1.2s'; // normal
+      rateEl.style.color = '';
+      rateEl.style.textShadow = '';
+    }
   }
+
   updateRate();
   setInterval(updateRate, 1800); // update every 1.8s
 })();
