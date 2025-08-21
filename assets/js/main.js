@@ -149,8 +149,9 @@
 })();
 
 const songs = [
-  { src: '/frontend/sounds/Mabagal.mp3', title: 'Mabagal' },
+  { src: '/frontend/sounds/Tahanan.mp3', title: 'Tahanan' },
   { src: '/frontend/sounds/Panaginip.mp3', title: 'Panaginip' },
+  { src: '/frontend/sounds/Paraluman.mp3', title: 'Paraluman' },
   { src: '/frontend/sounds/AboutYou.mp3', title: 'About You' },
   { src: '/frontend/sounds/Museo.mp3', title: 'Museo' },
 ];
