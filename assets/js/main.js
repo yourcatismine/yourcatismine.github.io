@@ -194,6 +194,7 @@ document.getElementById('crushPrevSong').addEventListener('click', () => {
   if(images.length === 0){ images = [img.getAttribute('src')]; }
   let idx = 0;
   let autoTimer = null;
+  let autoVisible = false;
 
   function renderDots(){
     dots.innerHTML = '';
@@ -247,19 +248,19 @@ document.getElementById('crushPrevSong').addEventListener('click', () => {
     }, { passive:false });
   }
 
-  function startAuto(){
-    if(images.length < 2) return;
+  function scheduleNextAuto(delay){
     stopAuto();
-    autoTimer = setInterval(()=> go(idx+1), 3000);
+    autoTimer = setTimeout(()=>{
+      autoTimer = null;
+      if(autoVisible && images.length >= 2){ go(idx+1); scheduleNextAuto(3000); }
+    }, delay);
   }
-  function stopAuto(){
-    if(autoTimer){ clearInterval(autoTimer); autoTimer = null; }
-  }
+  function stopAuto(){ if(autoTimer){ clearTimeout(autoTimer); autoTimer = null; } }
   // Pause auto on hover/focus; resume on leave/blur
   card.addEventListener('mouseenter', stopAuto);
-  card.addEventListener('mouseleave', startAuto);
+  card.addEventListener('mouseleave', ()=>{ if(autoVisible) scheduleNextAuto(1200); });
   card.addEventListener('focusin', stopAuto);
-  card.addEventListener('focusout', startAuto);
+  card.addEventListener('focusout', ()=>{ if(autoVisible) scheduleNextAuto(1200); });
 
   // Public helpers: allow quick toggles via data attributes
   // data-round="true" on #crushCard to make photo rounded-circle
@@ -276,8 +277,58 @@ document.getElementById('crushPrevSong').addEventListener('click', () => {
 
   // Always show controls and dots
   renderDots();
-  // Auto-advance only if we have 2 or more images
-  if(images.length >= 2){ startAuto(); }
+  // Auto-advance only while the card is visible
+  if('IntersectionObserver' in window){
+    const visIo = new IntersectionObserver((entries)=>{
+      for(const e of entries){
+        if(e.isIntersecting){ autoVisible = true; if(images.length >= 2) scheduleNextAuto(1200); }
+        else { autoVisible = false; stopAuto(); }
+      }
+    }, { threshold: 0.35 });
+    visIo.observe(card);
+  } else {
+    if(images.length >= 2) scheduleNextAuto(1200);
+  }
+
+  // --- Additional UI wiring: Like, Toggle Round, Shuffle ---
+  try{
+    const likeBtn = document.getElementById('crushLike');
+    const likeCountEl = document.getElementById('crushLikeCount');
+    const roundToggle = document.getElementById('crushRoundToggle');
+    const shuffleBtn = document.getElementById('crushShuffle');
+    // Like counter persisted to localStorage (key: crush-like-count)
+    if(likeCountEl && likeBtn){
+      const key = 'crush-like-count';
+      let count = parseInt(localStorage.getItem(key) || '0', 10) || 0;
+      likeCountEl.textContent = String(count);
+      likeBtn.addEventListener('click', ()=>{
+        count += 1;
+        localStorage.setItem(key, String(count));
+        likeCountEl.textContent = String(count);
+        likeBtn.setAttribute('aria-pressed','true');
+      });
+    }
+    // Toggle round styling
+    if(roundToggle){
+      roundToggle.addEventListener('click', ()=>{
+        const is = card.classList.toggle('is-round');
+        roundToggle.setAttribute('aria-pressed', is ? 'true' : 'false');
+      });
+    }
+    // Shuffle images using Fisher-Yates, then re-render
+    if(shuffleBtn){
+      shuffleBtn.addEventListener('click', ()=>{
+        for(let i = images.length - 1; i > 0; i--){
+          const j = Math.floor(Math.random() * (i + 1));
+          [images[i], images[j]] = [images[j], images[i]];
+        }
+        idx = 0;
+        renderDots();
+        img.style.opacity = '0';
+        setTimeout(()=>{ img.src = images[0]; img.onload = ()=> img.style.opacity = '1'; }, 100);
+      });
+    }
+  }catch(_){/* non-critical UI wiring failed silently */}
 })();
 
 // Crush auto-play audio when visible (with user control)
@@ -513,6 +564,27 @@ document.getElementById('crushPrevSong').addEventListener('click', () => {
     }
   }
 
+  // Reduced frequency and pause when offscreen to improve mobile performance
   updateRate();
-  setInterval(updateRate, 1800); // update every 1.8s
+  let hrTimer = null;
+  let hrVisible = true;
+  function scheduleHr(){
+    if(hrTimer) clearTimeout(hrTimer);
+    hrTimer = setTimeout(()=>{
+      hrTimer = null;
+      if(hrVisible){ updateRate(); scheduleHr(); }
+    }, 2500 + Math.random() * 1500); // 2.5 - 4s
+  }
+  const crushSection = document.getElementById('crush');
+  if('IntersectionObserver' in window && crushSection){
+    const io = new IntersectionObserver((entries)=>{
+      for(const entry of entries){
+        if(entry.isIntersecting){ hrVisible = true; scheduleHr(); }
+        else { hrVisible = false; if(hrTimer){ clearTimeout(hrTimer); hrTimer = null; } }
+      }
+    }, { threshold: 0.15 });
+    io.observe(crushSection);
+  } else {
+    scheduleHr();
+  }
 })();

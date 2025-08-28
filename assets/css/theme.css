@@ -232,54 +232,38 @@ img.rounded-circle{ border-radius:50% !important }
   #loader{ transition: none }
 }
 
-/* ===== Crush section ===== */
 #crush .crush-card{
   position:relative; overflow:hidden;
-  border-radius:16px;
+  border-radius:12px;
   background:
-    radial-gradient(ellipse at 60% 20%, rgba(255,101,132,0.18) 0%, transparent 60%),
-    radial-gradient(ellipse at 20% 80%, rgba(202,163,94,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse at 60% 20%, rgba(255,101,132,0.12) 0%, transparent 60%),
+    radial-gradient(ellipse at 20% 80%, rgba(202,163,94,0.08) 0%, transparent 60%),
     linear-gradient(120deg, #18141a 0%, #23202a 100%);
-  border:1px solid rgba(255,255,255,.10);
-  box-shadow: 0 20px 60px rgba(0,0,0,.45), 0 0 40px 0 rgba(255,101,132,.08), inset 0 0 28px rgba(255,255,255,.02);
-  display:grid; grid-template-columns: 160px 1fr; gap:18px;
-  padding:16px; align-items:center;
-  animation: romanceGlow 3s ease-in-out infinite;
+  border:1px solid rgba(255,255,255,.06);
+  /* keep shadows subtle to reduce paint cost on mobile */
+  box-shadow: 0 8px 28px rgba(0,0,0,.45), inset 0 0 12px rgba(255,255,255,.02);
+  display:grid; grid-template-columns: 140px 1fr; gap:14px;
+  padding:12px; align-items:center;
+  transition: box-shadow .35s ease, transform .18s ease;
 }
 
-@keyframes romanceGlow {
-  0%, 100% { box-shadow: 0 20px 60px rgba(0,0,0,.45), 0 0 40px 0 rgba(255,101,132,.08), inset 0 0 28px rgba(255,255,255,.02); }
-  50% { box-shadow: 0 28px 80px rgba(0,0,0,.55), 0 0 60px 0 rgba(255,101,132,.18), inset 0 0 38px rgba(255,255,255,.04); }
-}
+/* Subtle hover glow only (avoid continuous animation) */
+#crush .crush-card:hover{ box-shadow: 0 12px 36px rgba(0,0,0,.5), inset 0 0 18px rgba(255,255,255,.03); transform: translateY(-2px) }
 
+/* Simplified decorative ring: static, low-cost gradient instead of continuous conic spin */
 #crush .crush-card::before{
   content:""; position:absolute; inset:-1px; border-radius:inherit; padding:2px;
-  background: conic-gradient(from var(--angle),
-    color-mix(in oklab, var(--accent) 95%, #ffffff 0%) 0deg,
-    #8ec5ff 90deg,
-    #b388ff 180deg,
-    #ff89b5 270deg,
-    color-mix(in oklab, var(--accent) 95%, #ffffff 0%) 360deg
-  );
-  /* Mask so only the ring (border area) remains */
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
+  background: linear-gradient(90deg, rgba(255,101,132,.06), rgba(255,255,255,.04));
   mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   mask-composite: exclude;
-  filter: drop-shadow(0 0 14px color-mix(in oklab, var(--accent) 30%, transparent));
-  animation: crushBorderSpin 12s linear infinite;
+  -webkit-mask-composite: xor;
+  filter: drop-shadow(0 0 6px rgba(255,101,132,.06));
   pointer-events:none;
 }
-/* keep content above the animated ring */
+/* keep content above the decorative ring */
 #crush .crush-card > *{ position:relative; z-index:1 }
 
-/* Animate the --angle used by the conic-gradient */
-@keyframes crushBorderSpin{ to{ --angle: 360deg } }
-
-@media (prefers-reduced-motion: reduce){
-  #crush .crush-card::before{ animation: none }
-}
-#crush .crush-photo{ position:relative; aspect-ratio:1/1; overflow:hidden; border-radius:12px; border:1px solid rgba(255,255,255,.10) }
+#crush .crush-photo{ position:relative; aspect-ratio:1/1; overflow:hidden; border-radius:10px; border:1px solid rgba(255,255,255,.08) }
 #crush .crush-photo img{ width:100%; height:100%; object-fit:cover; display:block; border:0 }
 #crush .crush-photo .img-guard{
   position:absolute; inset:0; z-index:3; /* above img, below controls */
@@ -367,6 +351,45 @@ img.rounded-circle{ border-radius:50% !important }
 }
 #crush .crush-dots button[aria-selected="true"]{ background: var(--accent) }
 #crush .crush-dots button:focus-visible{ outline:2px solid var(--accent) }
+
+/* Crush action buttons (Like, Round, Shuffle) */
+.crush-actions{ display:flex; gap:10px; align-items:center; margin-top:8px; flex-wrap:nowrap }
+
+/* Compact Like pill */
+#crush .crush-actions #crushLike{
+  display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:9999px;
+  background: linear-gradient(180deg, #ff86ae 0%, #ff6f97 100%);
+  border: 1px solid rgba(0,0,0,.18);
+  color:#fff; font-weight:700; box-shadow: 0 6px 12px rgba(0,0,0,.28);
+  font-size: .88rem; line-height:1; min-height:34px; min-width:54px;
+}
+#crush .crush-actions #crushLike .fa-heart{ color:#fff; margin-left:0; font-size:.95rem }
+#crush .crush-actions #crushLikeCount{ font-weight:700; color:#fff; margin-left:6px; font-size:.9rem }
+
+
+/* Outlined pills for Round and Shuffle */
+#crush .crush-actions #crushRoundToggle,
+#crush .crush-actions #crushShuffle{
+  padding:6px 12px; border-radius:9999px; background: rgba(0,0,0,.28); border:1px solid rgba(255,255,255,.06);
+  color:#f2f2f2; font-size:.92rem; font-weight:600; display:inline-flex; align-items:center; gap:8px; min-height:36px;
+}
+
+#crush .crush-actions #crushRoundToggle:hover,
+#crush .crush-actions #crushShuffle:hover{ background: rgba(255,255,255,.03); transform: translateY(-1px) }
+
+#crush .crush-actions .btn:focus-visible{ outline:2px solid rgba(255,255,255,.12); outline-offset:2px }
+
+/* Bigger, clearer dots */
+#crush .crush-dots{ bottom:10px; gap:8px }
+#crush .crush-dots button{ width:10px; height:10px; border-radius:999px; background: rgba(255,255,255,.22); box-shadow:none; }
+#crush .crush-dots button[aria-selected="true"]{ background: var(--accent); box-shadow: 0 2px 8px rgba(0,0,0,.25); transform: scale(1.05); }
+
+@media (max-width: 576px){
+  #crush .crush-card{ grid-template-columns: 1fr; padding:10px; gap:10px }
+  .crush-actions{ justify-content:center }
+  #crush .crush-actions #crushLike{ padding:8px 14px }
+  #crush .crush-actions #crushRoundToggle{ padding:6px 10px }
+}
 
 /* ===== Greeting Toast ===== */
 .toast-greet{
