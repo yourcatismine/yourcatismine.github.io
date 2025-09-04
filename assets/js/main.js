@@ -1,37 +1,120 @@
 
 (function(){
-  const el = document.getElementById('console');
-  if(!el) return;
-  const lines = [
-    'Welcome to My Portoflio',
-    'This is Diego',
-    'I like Kiara',
-    'I love coding',
-  ];
+  // target the terminal body (so header stays fixed)
+  const consoleRoot = document.getElementById('console');
+  if(!consoleRoot) return;
+  const el = document.getElementById('consoleBody') || consoleRoot;
+
+  // Git-style typewriter: types commands, backspaces, and appends results
   const prompt = '$ ';
-  let line = 0, char = 0, history = '';
-  function render(){
-    const current = prompt + (lines[line] ?? '');
-    el.innerHTML = history + current.slice(0, prompt.length + char) + '<span class="caret"></span>';
+  const sequences = [
+    { cmd: 'git status', out: 'On branch main\nnothing to commit, working tree clean' },
+    { cmd: 'git add .', out: '' },
+    { cmd: 'git commit -m "feat: update portfolio"', out: '[main 1a2b3c] feat: update portfolio\n 4 files changed, 42 insertions(+), 8 deletions(-)' },
+    { cmd: 'git push origin main', out: 'Enumerating objects: 8, done.\nCounting objects: 100% (8/8), done.\nDelta compression using up to 2 threads\nCompressing objects: 100% (5/5), done.\nWriting objects: 100% (5/5), 1.23 KiB | 1.23 MiB/s, done.\nTotal 5 (delta 2), reused 0 (delta 0)\nTo github.com:yourcatismine/portfolio.git\n   9f1a2b3..1a2b3c  main -> main' }
+  ];
+
+  let history = '';
+  let seqIdx = 0;
+
+  // small helper to escape HTML when injecting into innerHTML
+  function escapeHtml(str){
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
-  function tick(){
-    if(line >= lines.length){
-      el.innerHTML = history + '<span class="caret"></span>';
-      return;
+
+  // render the command into the typing span, highlighting the first token (verb)
+  function renderCmdSpan(targetSpan, cmdText){
+    if(!targetSpan) return;
+    const s = String(cmdText || '');
+    const esc = escapeHtml(s);
+    const idx = esc.indexOf(' ');
+    if(idx === -1){
+      // no space yet — render the whole as verb (so partial verb highlights while typing)
+      targetSpan.innerHTML = `<span class="cmd-verb">${esc}</span>`;
+    } else {
+      const verb = esc.slice(0, idx);
+      const rest = esc.slice(idx + 1);
+      targetSpan.innerHTML = `<span class="cmd-verb">${verb}</span> ${rest}`;
     }
-    render();
-    if(char < lines[line].length){
-      char++;
-      setTimeout(tick, 65);
-      return;
-    }
-    history += prompt + lines[line] + '<br>';
-    line++;
-    char = 0;
-    setTimeout(tick, 450);
   }
-  tick();
+
+  function typeText(target, text, speed = 60){
+    return new Promise(res =>{
+      let i = 0;
+      function step(){
+        const cur = text.slice(0, i);
+        renderCmdSpan(target, cur);
+        i++;
+        if(i <= text.length) setTimeout(step, speed + Math.random()*20);
+        else res();
+      }
+      step();
+    });
+  }
+
+  function backspace(target, count, speed = 40){
+    return new Promise(res=>{
+      let i = 0;
+      function step(){
+        const t = target.textContent || '';
+        const next = t.slice(0, Math.max(0, t.length - 1));
+        renderCmdSpan(target, next);
+        i++;
+        if(i < count) setTimeout(step, speed + Math.random()*15);
+        else res();
+      }
+      step();
+    });
+  }
+
+  async function runSequence(){
+    // continuous loop over sequences, each command gets its own line element
+    while(true){
+      const seq = sequences[seqIdx];
+
+      // create a fresh line element for this command
+      const lineEl = document.createElement('div');
+      lineEl.className = 'console-line';
+      lineEl.innerHTML = prompt + '<span class="typing"></span>';
+  el.appendChild(lineEl);
+  // add visible class on next frame so CSS transition runs
+  requestAnimationFrame(()=>{ lineEl.classList.add('is-visible'); try{ el.scrollTop = el.scrollHeight; }catch(_){} });
+      // keep history trimmed
+      const nodes = Array.from(el.children);
+      if(nodes.length > 12){ nodes.slice(0, nodes.length - 12).forEach(n=>n.remove()); }
+
+      const typingSpan = lineEl.querySelector('.typing');
+
+  // show the whole command instantly (one-by-one messages) and highlight the verb
+  renderCmdSpan(typingSpan, seq.cmd);
+  // ensure new content is visible
+  requestAnimationFrame(()=>{ try{ el.scrollTop = el.scrollHeight; }catch(_){} });
+
+      // optionally append output
+      if(seq.out){
+  const outEl = document.createElement('div'); outEl.className = 'cmd-out'; outEl.innerHTML = seq.out.replace(/\n/g,'<br>');
+  el.appendChild(outEl);
+  requestAnimationFrame(()=>{ outEl.classList.add('is-visible'); try{ el.scrollTop = el.scrollHeight; }catch(_){} });
+      }
+
+      // brief pause
+      await new Promise(r=>setTimeout(r, 600 + Math.random()*600));
+
+  // no in-line edits — we display messages one-by-one
+
+      // small pause before moving on
+      await new Promise(r=>setTimeout(r, 800 + Math.random()*600));
+      seqIdx = (seqIdx + 1) % sequences.length;
+    }
+  }
+
+  // init
+  runSequence().catch(()=>{/* no-op */});
 })();
+
+// Like functionality removed (button removed from HTML)
+
+// Like initialization removed
 
 (function(){
   const els=[...document.querySelectorAll('[data-reveal]')];
@@ -59,46 +142,81 @@
   const loader = document.getElementById('loader');
   const label = document.getElementById('loader-text');
   if(!loader || !label) return;
+  // Ensure page doesn't scroll while loader visible
   document.documentElement.classList.add('no-scroll');
   document.body.classList.add('no-scroll');
-  const greetings = [
-    'Bonjour',      // French
-    'Hola',         // Spanish
-    'こんにちは',       // Japanese
-    '안녕하세요',        // Korean
-    'مرحبًا',         // Arabic
-    'Hallo',        // German
-    'Ciao',         // Italian
-    'Olá',          // Portuguese
-    'नमस्ते',        // Hindi
-    '你好',           // Chinese
-    'Здравствуйте', // Russian
-    'Hello'         // Final
-  ];
-  let i = 0;
-  const stepDelay = 120; // ms per word
-  function next(){
-    label.textContent = greetings[i];
-    i++;
-    if(i < greetings.length){
-      setTimeout(next, stepDelay);
-    }else{
-      setTimeout(()=> {
-        loader.classList.add('is-hidden');
-        setTimeout(()=>{
-          document.documentElement.classList.remove('no-scroll');
-          document.body.classList.remove('no-scroll');
-        }, 380);
-      }, 750);
-    }
+
+  // Greeting sequence (short, accessible)
+  const greetings = ['Bonjour','Hola','Ciao','Hello'];
+  let gi = 0;
+  const stepDelay = 420; // slower reveal per greeting
+  let seqTimer = null;
+
+  function showNextGreeting(){
+    label.textContent = greetings[gi] || '';
+    gi++;
+    if(gi < greetings.length){ seqTimer = setTimeout(showNextGreeting, stepDelay); }
   }
-  const safety = setTimeout(()=> {
+
+  // Hide routine: graceful fade and restore scrolling
+  function hideLoader(){
+    if(loader.classList.contains('is-hidden')) return;
     loader.classList.add('is-hidden');
     document.documentElement.classList.remove('no-scroll');
     document.body.classList.remove('no-scroll');
-  }, 6000);
-  loader.addEventListener('transitionend', ()=> clearTimeout(safety));
-  setTimeout(next, 60);
+  }
+
+  // Ensure loader hides when the page has loaded or after a maximum timeout
+  const MAX_WAIT = 8000; // ms (longer so users can absorb the greeting)
+  const maxTimeout = setTimeout(()=>{ clearTimeout(seqTimer); finalize(); }, MAX_WAIT);
+
+  // Try to run the greeting sequence, but avoid blocking long
+  seqTimer = setTimeout(showNextGreeting, 80);
+
+  // Prefer to hide when the window fires 'load' (images/fonts ready)
+  function onLoaded(){ clearTimeout(maxTimeout); clearTimeout(seqTimer); hideLoader(); window.removeEventListener('load', onLoaded); }
+  window.addEventListener('load', onLoaded);
+
+  // Also hide if user presses Escape (accessibility/escape hatch)
+  window.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') { clearTimeout(maxTimeout); clearTimeout(seqTimer); hideLoader(); } });
+
+  // Progress bar update (gentle ramp to 85% while loading)
+  const progressEl = document.getElementById('loaderProgress');
+  function setProgress(p){
+    if(!progressEl) return;
+    progressEl.setAttribute('aria-valuenow', Math.round(p));
+    progressEl.querySelector('::after');
+    // update pseudo-element width via inline style hack
+    progressEl.style.setProperty('--p', p + '%');
+    const inner = progressEl.querySelector('.progress-fill');
+  }
+  // animate CSS pseudo via width on ::after — ramp more slowly to feel deliberate
+  let prog = 0;
+  const progTick = setInterval(()=>{
+    prog = Math.min(85, prog + (1 + Math.random()*2.5)); // smaller steps
+    const bar = document.querySelector('#loaderProgress');
+    if(bar) bar.style.setProperty('--p-width', prog + '%');
+    if(prog >= 85) clearInterval(progTick);
+  }, 420);
+
+  // Apply width to pseudo via inline style using a small helper style element
+  const styleId = 'loader-progress-dynamic';
+  if(!document.getElementById(styleId)){
+    const s = document.createElement('style'); s.id = styleId;
+    s.innerHTML = '#loader .loader-progress::after{ width: var(--p-width, 0%) }'; document.head.appendChild(s);
+  }
+
+  // Skip button wiring
+  const skipBtn = document.getElementById('loaderSkip');
+  if(skipBtn){ skipBtn.addEventListener('click', ()=>{ clearTimeout(maxTimeout); clearTimeout(seqTimer); hideLoader(); }); }
+
+  // When we hide (on load), set progress to 100% and wait a short moment so user sees completion
+  function finalize(){
+    clearInterval(progTick);
+    const bar = document.querySelector('#loaderProgress'); if(bar) bar.style.setProperty('--p-width','100%');
+    // small pause so 100% is visible and the fade feels intentional
+    setTimeout(()=>{ hideLoader(); }, 520);
+  }
 })();
 
 // Greeting toast (GMT+8)
@@ -148,6 +266,8 @@
   }
 })();
 
+// Timeline removed
+
 const songs = [
   { src: '/frontend/sounds/Tahanan.mp3', title: 'Tahanan' },
   { src: '/frontend/sounds/Panaginip.mp3', title: 'Panaginip' },
@@ -174,159 +294,157 @@ document.getElementById('crushPrevSong').addEventListener('click', () => {
   loadSong(currentSong);
 });
 
-// Crush photo switcher
+// Crush photo switcher (defensive, minimal)
 (function(){
-  const container = document.getElementById('crush');
-  if(!container) return;
-  const card = document.getElementById('crushCard');
-  const photoWrap = document.getElementById('crushPhoto');
-  const img = document.getElementById('crushImg');
-  const prev = document.getElementById('crushPrev');
-  const next = document.getElementById('crushNext');
-  const dots = document.getElementById('crushDots');
-  const guard = document.getElementById('crushGuard');
-  if(!card || !photoWrap || !img || !dots) return;
-
-  // Read image list from data-images or fallback to current src
-  let images = [];
-  const attr = photoWrap.getAttribute('data-images');
-  if(attr){ images = attr.split(',').map(s=>s.trim()).filter(Boolean); }
-  if(images.length === 0){ images = [img.getAttribute('src')]; }
-  let idx = 0;
-  let autoTimer = null;
-  let autoVisible = false;
-
-  function renderDots(){
-    dots.innerHTML = '';
-    images.forEach((_, i)=>{
-      const b = document.createElement('button');
-      b.type = 'button';
-      b.setAttribute('role', 'tab');
-      b.setAttribute('aria-selected', i===idx ? 'true' : 'false');
-      b.setAttribute('aria-label', 'Photo ' + (i+1));
-      b.addEventListener('click', ()=> go(i));
-      dots.appendChild(b);
-    });
-  }
-
-  function go(newIdx){
-    if(newIdx < 0) newIdx = images.length - 1;
-    if(newIdx >= images.length) newIdx = 0;
-    if(newIdx === idx) return;
-    idx = newIdx;
-    // simple fade
-    img.style.opacity = '0';
-    setTimeout(()=>{
-      img.src = images[idx];
-      img.onload = ()=>{ img.style.opacity = '1'; };
-      // update dots
-      [...dots.children].forEach((d, i)=> d.setAttribute('aria-selected', i===idx ? 'true' : 'false'));
-      // reset auto-timer after manual change
-      if(autoTimer){ startAuto(); }
-    }, 140);
-  }
-
-  prev && prev.addEventListener('click', ()=> go(idx-1));
-  next && next.addEventListener('click', ()=> go(idx+1));
-  card.addEventListener('keydown', (e)=>{
-    if(e.key === 'ArrowLeft') { e.preventDefault(); go(idx-1); }
-    if(e.key === 'ArrowRight') { e.preventDefault(); go(idx+1); }
-  });
-
-  // Anti-download interactions on the image area (best-effort; note users can still capture via screenshots/devtools)
-  if(guard){
-    const block = (e)=>{ e.preventDefault(); e.stopPropagation(); };
-    guard.addEventListener('contextmenu', block);
-    guard.addEventListener('dragstart', block);
-    guard.addEventListener('mousedown', (e)=>{
-      // allow clicks to pass to nav/dots by z-index; guard itself blocks direct image interactions
-      if(e.button === 1){ block(e); } // middle click
-    });
-    guard.addEventListener('touchstart', (e)=>{
-      // Prevent long-press save dialogs on some mobile browsers
-      block(e);
-    }, { passive:false });
-  }
-
-  function scheduleNextAuto(delay){
-    stopAuto();
-    autoTimer = setTimeout(()=>{
-      autoTimer = null;
-      if(autoVisible && images.length >= 2){ go(idx+1); scheduleNextAuto(3000); }
-    }, delay);
-  }
-  function stopAuto(){ if(autoTimer){ clearTimeout(autoTimer); autoTimer = null; } }
-  // Pause auto on hover/focus; resume on leave/blur
-  card.addEventListener('mouseenter', stopAuto);
-  card.addEventListener('mouseleave', ()=>{ if(autoVisible) scheduleNextAuto(1200); });
-  card.addEventListener('focusin', stopAuto);
-  card.addEventListener('focusout', ()=>{ if(autoVisible) scheduleNextAuto(1200); });
-
-  // Public helpers: allow quick toggles via data attributes
-  // data-round="true" on #crushCard to make photo rounded-circle
-  const round = card.getAttribute('data-round');
-  if(round === 'true' || card.classList.contains('is-round')){
-    card.classList.add('is-round');
-  }
-  // Optional: data-quote on .crush-content .quote
-  const quoteEl = container.querySelector('.crush-content .quote');
-  if(quoteEl){
-    const qAttr = quoteEl.getAttribute('data-quote');
-    if(qAttr){ quoteEl.textContent = qAttr; }
-  }
-
-  // Always show controls and dots
-  renderDots();
-  // Auto-advance only while the card is visible
-  if('IntersectionObserver' in window){
-    const visIo = new IntersectionObserver((entries)=>{
-      for(const e of entries){
-        if(e.isIntersecting){ autoVisible = true; if(images.length >= 2) scheduleNextAuto(1200); }
-        else { autoVisible = false; stopAuto(); }
-      }
-    }, { threshold: 0.35 });
-    visIo.observe(card);
-  } else {
-    if(images.length >= 2) scheduleNextAuto(1200);
-  }
-
-  // --- Additional UI wiring: Like, Toggle Round, Shuffle ---
   try{
-    const likeBtn = document.getElementById('crushLike');
-    const likeCountEl = document.getElementById('crushLikeCount');
-    const roundToggle = document.getElementById('crushRoundToggle');
-    const shuffleBtn = document.getElementById('crushShuffle');
-    // Like counter persisted to localStorage (key: crush-like-count)
-    if(likeCountEl && likeBtn){
-      const key = 'crush-like-count';
-      let count = parseInt(localStorage.getItem(key) || '0', 10) || 0;
-      likeCountEl.textContent = String(count);
-      likeBtn.addEventListener('click', ()=>{
-        count += 1;
-        localStorage.setItem(key, String(count));
-        likeCountEl.textContent = String(count);
-        likeBtn.setAttribute('aria-pressed','true');
-      });
+    const card = document.getElementById('crushCard');
+    if(!card) return;
+
+    const img = card.querySelector('img') || document.getElementById('crushImg');
+  const prevBtn = card.querySelector('[data-action="prev"]') || document.getElementById('crushPrev');
+  const nextBtn = card.querySelector('[data-action="next"]') || document.getElementById('crushNext');
+  const shuffleBtn = card.querySelector('[data-action="shuffle"]') || document.getElementById('crushShuffle');
+    const roundToggle = card.querySelector('[data-action="round"]') || document.getElementById('crushRoundToggle');
+
+    // collect image sources from data-images attribute, data-crush-src, or img elements inside .crush-images
+    let images = [];
+    const photoWrap = card.querySelector('#crushPhoto') || card.querySelector('.crush-photo');
+    if(photoWrap){
+      const data = photoWrap.getAttribute('data-images');
+      if(data){
+        data.split(',').forEach(s => {
+          const v = (s || '').trim(); if(v) images.push(v);
+        });
+      }
     }
-    // Toggle round styling
+    const listImgs = card.querySelectorAll('[data-crush-src], .crush-images img');
+    listImgs.forEach(i => {
+      const s = i.getAttribute('data-crush-src') || i.src;
+      if(s) images.push(s);
+    });
+
+    // normalize and dedupe while preserving order
+    images = images.map(s=> (s||'').trim()).filter(Boolean);
+    const seen = new Set();
+    images = images.filter(s=>{ if(seen.has(s)) return false; seen.add(s); return true; });
+    // fallback: any image in frontend/images
+    if(images.length === 0){
+      const fallback = card.querySelector('img');
+      if(fallback && fallback.src) images.push(fallback.src);
+    }
+    if(images.length === 0) return;
+
+    let idx = 0;
+    function render(){
+      if(!img) return;
+      img.style.opacity = '0';
+      setTimeout(()=>{
+        img.src = images[idx];
+        img.onload = ()=> img.style.opacity = '1';
+      }, 100);
+      updateDots && updateDots();
+    }
+
+    function next(){ idx = (idx + 1) % images.length; render(); }
+    function prev(){ idx = (idx - 1 + images.length) % images.length; render(); }
+
+    if(nextBtn) nextBtn.addEventListener('click', next);
+    if(prevBtn) prevBtn.addEventListener('click', prev);
+
+  // likeBtn handling removed here in favor of delegated handler (prevents double-toggle)
+
     if(roundToggle){
       roundToggle.addEventListener('click', ()=>{
         const is = card.classList.toggle('is-round');
         roundToggle.setAttribute('aria-pressed', is ? 'true' : 'false');
       });
     }
-    // Shuffle images using Fisher-Yates, then re-render
+
     if(shuffleBtn){
       shuffleBtn.addEventListener('click', ()=>{
         for(let i = images.length - 1; i > 0; i--){
           const j = Math.floor(Math.random() * (i + 1));
           [images[i], images[j]] = [images[j], images[i]];
         }
-        idx = 0;
-        renderDots();
-        img.style.opacity = '0';
-        setTimeout(()=>{ img.src = images[0]; img.onload = ()=> img.style.opacity = '1'; }, 100);
+        idx = 0; render();
       });
+    }
+
+    // optional dots rendering
+    const dotsContainer = card.querySelector('.crush-dots');
+    let updateDots = null;
+    if(dotsContainer){
+      function makeDot(i){
+        const d = document.createElement('button');
+        d.type = 'button'; d.className = 'crush-dot';
+        d.setAttribute('aria-label', 'Image ' + (i+1));
+        d.setAttribute('role', 'tab');
+        d.addEventListener('click', ()=>{ idx = i; render(); });
+        return d;
+      }
+      function renderDots(){
+        dotsContainer.innerHTML = '';
+        images.forEach((_, i)=> dotsContainer.appendChild(makeDot(i)));
+        // mark the active dot
+        Array.from(dotsContainer.children).forEach((c, i)=>{
+          c.classList.toggle('active', i === idx);
+          c.setAttribute('aria-selected', i === idx ? 'true' : 'false');
+        });
+      }
+      updateDots = ()=>{
+        Array.from(dotsContainer.children).forEach((c, i)=>{
+          c.classList.toggle('active', i === idx);
+          c.setAttribute('aria-selected', i === idx ? 'true' : 'false');
+        });
+      };
+      renderDots();
+    }
+
+    // initial render
+    render();
+    // --- Autoplay for images: advance automatically when visible ---
+    let autoplayInterval = null;
+    let autoplayDelay = 4500; // ms between slides
+    let autoplayPausedByHover = false;
+    let autoplayPausedByInteraction = false; // set when user clicks prev/next/dot
+
+    function startAutoplay(){
+      if(autoplayInterval) return;
+      autoplayInterval = setInterval(()=>{ if(!autoplayPausedByHover && !autoplayPausedByInteraction) next(); }, autoplayDelay);
+    }
+    function stopAutoplay(){ if(autoplayInterval){ clearInterval(autoplayInterval); autoplayInterval = null; } }
+
+    // Pause when the user interacts (click prev/next/shuffle/dot)
+    const userInteractiveElements = [nextBtn, prevBtn, shuffleBtn, dotsContainer, roundToggle];
+    userInteractiveElements.forEach(el=>{
+      if(!el) return;
+      el.addEventListener('click', ()=>{
+        autoplayPausedByInteraction = true;
+        // resume after a short idle period
+        setTimeout(()=>{ autoplayPausedByInteraction = false; }, 6000);
+      }, { passive:true });
+    });
+
+    // Pause on hover/focus of photo area
+    if(photoWrap){
+      photoWrap.addEventListener('mouseenter', ()=>{ autoplayPausedByHover = true; }, { passive:true });
+      photoWrap.addEventListener('mouseleave', ()=>{ autoplayPausedByHover = false; }, { passive:true });
+      photoWrap.addEventListener('focusin', ()=>{ autoplayPausedByHover = true; }, { passive:true });
+      photoWrap.addEventListener('focusout', ()=>{ autoplayPausedByHover = false; }, { passive:true });
+    }
+
+    // Only autoplay when the crush card is visible in the viewport
+    if('IntersectionObserver' in window && photoWrap){
+      const visObs = new IntersectionObserver(entries=>{
+        entries.forEach(en=>{
+          if(en.isIntersecting){ startAutoplay(); }
+          else{ stopAutoplay(); }
+        });
+      }, { threshold: 0.4 });
+      visObs.observe(photoWrap);
+    } else {
+      // fallback: start autoplay after initial render
+      startAutoplay();
     }
   }catch(_){/* non-critical UI wiring failed silently */}
 })();
@@ -588,3 +706,652 @@ document.getElementById('crushPrevSong').addEventListener('click', () => {
     scheduleHr();
   }
 })();
+
+// Theme Toggle
+(function(){
+  const themeToggle = document.getElementById('themeToggle');
+  if(!themeToggle) return;
+
+  const html = document.documentElement;
+  const icon = themeToggle.querySelector('i');
+
+  // Check for saved theme preference or default to dark
+  const currentTheme = localStorage.getItem('theme') || 'dark';
+  html.setAttribute('data-theme', currentTheme);
+  updateIcon(currentTheme);
+
+  themeToggle.addEventListener('click', () => {
+    const currentTheme = html.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+    html.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    updateIcon(newTheme);
+  });
+
+  function updateIcon(theme) {
+    if(theme === 'dark') {
+      icon.className = 'fa-solid fa-moon';
+      themeToggle.setAttribute('aria-label', 'Switch to light mode');
+    } else {
+      icon.className = 'fa-solid fa-sun';
+      themeToggle.setAttribute('aria-label', 'Switch to dark mode');
+    }
+  }
+})();
+
+// Project Modals
+(function(){
+  const projectData = {
+    'minecraft-bot': {
+      title: 'Minecraft Bedrock Bot',
+      image: '/frontend/images/minecraftbot.png',
+      description: 'A sophisticated bot for Minecraft Bedrock Edition that relays in-game chat to Discord in real-time. Features include automated logging, player activity monitoring, and custom command handling.',
+      technologies: ['JavaScript', 'Node.js', 'Discord.js', 'Bedrock Protocol'],
+      features: [
+        'Real-time chat relay between Minecraft and Discord',
+        'Automated player join/leave notifications',
+        'Custom command system',
+        'Activity logging and statistics',
+        'Anti-spam protection',
+        'Role-based permissions'
+      ],
+      github: 'https://github.com/yourcatismine/minecraft-bot',
+      demo: null
+    },
+    'discord-bot': {
+      title: 'Discord Moderation Bot',
+      image: '/frontend/images/discordmod.png',
+      description: 'A comprehensive Discord bot designed for server moderation and management. Includes features like auto-moderation, custom commands, music playback, and user management tools.',
+      technologies: ['JavaScript', 'Node.js', 'Discord.js'],
+      features: [
+        'Advanced auto-moderation system',
+        'Custom command creation',
+        'Music playback with queue management',
+        'User warning and ban system',
+        'Server statistics and analytics',
+        'Welcome messages and role assignment',
+        'Reaction roles and polls'
+      ],
+      github: 'https://github.com/yourcatismine/discord-bot',
+      demo: null
+    },
+    'portfolio': {
+      title: 'Personal Portfolio Website',
+      image: '/frontend/images/web.png',
+      description: 'This responsive portfolio website built with modern web technologies. Features smooth animations, dark/light mode toggle, and optimized performance.',
+      technologies: ['HTML5', 'CSS3', 'JavaScript', 'Bootstrap 5'],
+      features: [
+        'Responsive design for all devices',
+        'Dark/Light mode toggle',
+        'Smooth scroll animations',
+        'Interactive contact form',
+        'Project showcase with modals',
+        'Performance optimized',
+        'SEO friendly'
+      ],
+      github: 'https://github.com/yourcatismine/portfolio',
+      demo: null
+    },
+    'capstone': {
+      title: 'Capstone Project - Laravel Web App',
+      image: '/frontend/images/firstcapstone.png',
+      description: 'My first major capstone project built with Laravel and PHP. Features user authentication, Google/GitHub OAuth integration, and email OTP verification system.',
+      technologies: ['PHP', 'Laravel', 'MySQL', 'Bootstrap', 'OAuth'],
+      features: [
+        'User registration and authentication',
+        'Google and GitHub OAuth integration',
+        'Email OTP verification',
+        'Responsive dashboard',
+        'User profile management',
+        'Session management'
+      ],
+      github: 'https://github.com/yourcatismine/capstone-project',
+      demo: null
+    },
+    'shop-system': {
+      title: 'E-commerce Shop System',
+      image: '/frontend/images/shopssytem.png',
+      description: 'A complete e-commerce solution built with Laravel featuring money management, Discord login integration, and comprehensive shop functionality.',
+      technologies: ['PHP', 'Laravel', 'MySQL', 'Discord OAuth', 'Bootstrap'],
+      features: [
+        'User authentication with Discord OAuth',
+        'Product catalog and shopping cart',
+        'Payment processing integration',
+        'Money management system',
+        'Order tracking and history',
+        'Admin dashboard',
+        'Inventory management'
+      ],
+      github: 'https://github.com/yourcatismine/shop-system',
+      demo: null
+    }
+  };
+
+  // Handle project detail buttons
+  document.addEventListener('click', function(e) {
+    if(e.target.classList.contains('view-details')) {
+      e.preventDefault();
+      const projectId = e.target.getAttribute('data-project');
+      showProjectModal(projectId);
+    }
+  });
+
+  function showProjectModal(projectId) {
+    const project = projectData[projectId];
+    if(!project) return;
+
+    const modal = new bootstrap.Modal(document.getElementById('projectModal'));
+    const content = document.getElementById('projectContent');
+
+    content.innerHTML = `
+      <div class="row g-4">
+        <div class="col-md-6">
+          <img src="${project.image}" alt="${project.title}" class="img-fluid rounded">
+        </div>
+        <div class="col-md-6">
+          <h4>${project.title}</h4>
+          <p class="text-secondary mb-3">${project.description}</p>
+
+          <h6>Technologies Used:</h6>
+          <div class="mb-3">
+            ${project.technologies.map(tech => `<span class="badge bg-primary me-1">${tech}</span>`).join('')}
+          </div>
+
+          <h6>Key Features:</h6>
+          <ul class="mb-3">
+            ${project.features.map(feature => `<li>${feature}</li>`).join('')}
+          </ul>
+
+          <div class="d-flex gap-2">
+            ${project.github ? `<a href="${project.github}" target="_blank" class="btn btn-outline-primary btn-sm">
+              <i class="fa-brands fa-github me-1"></i>View Code
+            </a>` : ''}
+            ${project.demo ? `<a href="${project.demo}" target="_blank" class="btn btn-primary btn-sm">
+              <i class="fa-solid fa-external-link me-1"></i>Live Demo
+            </a>` : ''}
+          </div>
+        </div>
+      </div>
+    `;
+
+    modal.show();
+  }
+})();
+
+// Scroll Progress Bar
+(function(){
+  const progressBar = document.getElementById('scrollProgress');
+  if(!progressBar) return;
+
+  function updateProgress() {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const scrollPercent = (scrollTop / docHeight) * 100;
+    progressBar.style.width = Math.min(scrollPercent, 100) + '%';
+  }
+
+  window.addEventListener('scroll', updateProgress);
+  // Initial call
+  updateProgress();
+})();
+
+// Animated Counters
+(function(){
+  const counters = document.querySelectorAll('.stat-number');
+  if(counters.length === 0) return;
+
+  let hasAnimated = false;
+
+  function animateCounters() {
+    if(hasAnimated) return;
+    hasAnimated = true;
+
+    counters.forEach(counter => {
+      const target = parseInt(counter.getAttribute('data-target'));
+      const duration = 2000; // 2 seconds
+      const step = target / (duration / 16); // 60fps
+      let current = 0;
+
+      const timer = setInterval(() => {
+        current += step;
+        if(current >= target) {
+          counter.textContent = target.toLocaleString();
+          clearInterval(timer);
+        } else {
+          counter.textContent = Math.floor(current).toLocaleString();
+        }
+      }, 16);
+    });
+  }
+
+  // Trigger animation when stats section comes into view
+  if('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting) {
+          animateCounters();
+          observer.disconnect();
+        }
+      });
+    }, { threshold: 0.5 });
+
+    const statsSection = document.querySelector('.stat-item')?.closest('section');
+    if(statsSection) {
+      observer.observe(statsSection);
+    }
+  } else {
+    // Fallback: animate after a delay
+    setTimeout(animateCounters, 1000);
+  }
+})();
+
+// Enhanced Crush Features
+(function(){
+  const crushCard = document.getElementById('crushCard');
+  if(!crushCard) return;
+
+  // Floating Hearts Animation
+  function createFloatingHeart() {
+    const heart = document.createElement('div');
+    heart.className = 'floating-heart';
+    heart.innerHTML = '❤️';
+    heart.style.left = Math.random() * 100 + '%';
+    heart.style.animationDuration = (Math.random() * 2 + 2) + 's';
+    heart.style.fontSize = (Math.random() * 0.5 + 1) + 'rem';
+
+    const floatingHearts = document.getElementById('floatingHearts');
+    if(floatingHearts) {
+      floatingHearts.appendChild(heart);
+
+      setTimeout(() => {
+        heart.remove();
+      }, 3000);
+    }
+  }
+
+  // Create hearts periodically when crush section is visible
+  let heartInterval = null;
+  const crushSection = document.getElementById('crush');
+
+  if('IntersectionObserver' in window && crushSection) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting) {
+          heartInterval = setInterval(createFloatingHeart, 2000);
+        } else {
+          if(heartInterval) {
+            clearInterval(heartInterval);
+            heartInterval = null;
+          }
+        }
+      });
+    }, { threshold: 0.3 });
+
+    observer.observe(crushSection);
+  }
+
+  // Typing Effect for Quote
+  const quoteElement = document.getElementById('crushQuote');
+  if(quoteElement) {
+    const originalText = quoteElement.textContent;
+    quoteElement.textContent = '';
+    quoteElement.classList.add('crush-quote-typing');
+
+    let charIndex = 0;
+    const typingSpeed = 50;
+
+    function typeWriter() {
+      if(charIndex < originalText.length) {
+        quoteElement.textContent += originalText.charAt(charIndex);
+        charIndex++;
+        setTimeout(typeWriter, typingSpeed);
+      } else {
+        quoteElement.classList.remove('crush-quote-typing');
+      }
+    }
+
+    // Start typing when crush section comes into view
+    if('IntersectionObserver' in window && crushSection) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if(entry.isIntersecting) {
+            setTimeout(typeWriter, 1000); // Delay to let user see the section first
+            observer.disconnect();
+          }
+        });
+      }, { threshold: 0.5 });
+
+      observer.observe(crushSection);
+    } else {
+      setTimeout(typeWriter, 2000);
+    }
+  }
+
+  // Love Meter Animation
+  const loveMeterFill = document.getElementById('loveMeterFill');
+  const lovePercentage = document.getElementById('lovePercentage');
+
+  if(loveMeterFill && lovePercentage) {
+    let currentPercentage = 0;
+    const targetPercentage = 100;
+    const animationDuration = 2000;
+    const stepTime = 50;
+    const steps = animationDuration / stepTime;
+    const stepValue = targetPercentage / steps;
+
+    function animateLoveMeter() {
+      if(currentPercentage < targetPercentage) {
+        currentPercentage += stepValue;
+        const displayPercentage = Math.min(Math.round(currentPercentage), targetPercentage);
+
+        loveMeterFill.style.width = displayPercentage + '%';
+        lovePercentage.textContent = displayPercentage + '%';
+
+        setTimeout(animateLoveMeter, stepTime);
+      }
+    }
+
+    // Start animation when crush section is visible
+    if('IntersectionObserver' in window && crushSection) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if(entry.isIntersecting) {
+            setTimeout(animateLoveMeter, 500);
+            observer.disconnect();
+          }
+        });
+      }, { threshold: 0.3 });
+
+      observer.observe(crushSection);
+    } else {
+      setTimeout(animateLoveMeter, 1000);
+    }
+  }
+
+  // Special Dates Highlighting
+  const specialDates = document.querySelectorAll('.special-date');
+  const today = new Date();
+
+  specialDates.forEach(dateElement => {
+    const dateStr = dateElement.getAttribute('data-date');
+    if(dateStr) {
+      const eventDate = new Date(dateStr);
+      const diffTime = today - eventDate;
+      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+      // Add days since badge
+      const daysBadge = document.createElement('span');
+      daysBadge.className = 'days-since';
+      daysBadge.textContent = `${diffDays} days ago`;
+      dateElement.appendChild(daysBadge);
+
+      // Highlight if it's a special date (anniversary, etc.)
+      const todayMonth = today.getMonth();
+      const todayDay = today.getDate();
+      const eventMonth = eventDate.getMonth();
+      const eventDay = eventDate.getDate();
+
+      if(todayMonth === eventMonth && todayDay === eventDay) {
+        dateElement.classList.add('special-today');
+        dateElement.querySelector('.date-badge').textContent += ' 🎉';
+      }
+    }
+  });
+
+  // Like button removed: floating-heart trigger removed
+})();
+
+// Timeline Toggle Functionality
+(function(){
+  const timelineToggle = document.getElementById('timelineToggle');
+  const monthlyTimeline = document.getElementById('monthlyTimeline');
+  const timelineText = document.getElementById('timelineText');
+
+  if(timelineToggle && monthlyTimeline && timelineText) {
+    let isExpanded = false;
+
+    timelineToggle.addEventListener('click', () => {
+      isExpanded = !isExpanded;
+
+      if(isExpanded) {
+        monthlyTimeline.style.display = 'block';
+        timelineText.textContent = 'Hide Timeline';
+        timelineToggle.querySelector('.fa-chevron-down').style.transform = 'rotate(180deg)';
+        // Smooth scroll to show the timeline
+        setTimeout(() => {
+          monthlyTimeline.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 100);
+      } else {
+        monthlyTimeline.style.display = 'none';
+        timelineText.textContent = 'Show Full Timeline';
+        timelineToggle.querySelector('.fa-chevron-down').style.transform = 'rotate(0deg)';
+      }
+    });
+  }
+})();
+
+// Horizontal Timeline Navigation
+(function(){
+  const timelinePrev = document.getElementById('timelinePrev');
+  const timelineNext = document.getElementById('timelineNext');
+  const currentYearDisplay = document.getElementById('currentYear');
+  const timelineTrack = document.getElementById('timelineTrack');
+  const yearSections = document.querySelectorAll('.timeline-year-section');
+
+  if(timelinePrev && timelineNext && currentYearDisplay && timelineTrack && yearSections.length > 0) {
+    let currentYearIndex = 0;
+    const years = ['2023', '2024', '2025'];
+    let isScrolling = false;
+
+    // Initialize with current year (2025)
+    currentYearIndex = years.indexOf('2025');
+    updateTimeline();
+
+    function updateTimeline() {
+      const currentYear = years[currentYearIndex];
+      currentYearDisplay.textContent = currentYear;
+
+      // Hide all sections
+      yearSections.forEach(section => {
+        section.style.display = 'none';
+      });
+
+      // Show current year section
+      const currentSection = document.querySelector(`[data-year="${currentYear}"]`);
+      if(currentSection) {
+        currentSection.style.display = 'flex';
+      }
+
+      // Update button states
+      timelinePrev.disabled = currentYearIndex === 0;
+      timelineNext.disabled = currentYearIndex === years.length - 1;
+
+      // Add visual feedback
+      timelinePrev.style.opacity = currentYearIndex === 0 ? '0.5' : '1';
+      timelineNext.style.opacity = currentYearIndex === years.length - 1 ? '0.5' : '1';
+
+      // Update fade effects after a short delay to allow DOM updates
+      setTimeout(updateFadeEffects, 100);
+    }
+
+    function updateFadeEffects() {
+      if (!timelineTrack) return;
+
+      const scrollLeft = timelineTrack.scrollLeft;
+      const scrollWidth = timelineTrack.scrollWidth;
+      const clientWidth = timelineTrack.clientWidth;
+      const maxScroll = scrollWidth - clientWidth;
+      // If there's no horizontal overflow, remove fades entirely
+      if (maxScroll <= 10) {
+        timelineTrack.classList.remove('fade-left', 'fade-right', 'fade-both');
+        timelineTrack.classList.add('no-fade');
+      } else {
+        timelineTrack.classList.remove('no-fade');
+
+        // Remove all fade classes
+        timelineTrack.classList.remove('fade-left', 'fade-right', 'fade-both');
+
+        // Add appropriate fade classes based on scroll position
+        if (scrollLeft <= 10) {
+          // At the beginning: hide left fade
+          timelineTrack.classList.add('fade-left');
+        } else if (scrollLeft >= maxScroll - 10) {
+          // At the end: hide right fade
+          timelineTrack.classList.add('fade-right');
+        } else if (maxScroll > 10) {
+          // In the middle (can scroll both ways): show both fades
+          timelineTrack.classList.add('fade-both');
+        }
+      }
+
+      // Update fade effects for year milestones within the current year
+      updateYearMilestonesFade();
+    }
+
+    function updateYearMilestonesFade() {
+      const currentYear = years[currentYearIndex];
+      const currentSection = document.querySelector(`[data-year="${currentYear}"]`);
+      if (!currentSection) return;
+
+      const yearMilestones = currentSection.querySelector('.year-milestones');
+      if (!yearMilestones) return;
+
+      const scrollLeft = yearMilestones.scrollLeft;
+      const scrollWidth = yearMilestones.scrollWidth;
+      const clientWidth = yearMilestones.clientWidth;
+      const maxScroll = scrollWidth - clientWidth;
+
+      // Remove all fade classes
+      yearMilestones.classList.remove('fade-left', 'fade-right', 'fade-both');
+
+      // Add appropriate fade classes based on scroll position
+      if (scrollLeft <= 10) {
+        // At the beginning
+        yearMilestones.classList.add('fade-left');
+      } else if (scrollLeft >= maxScroll - 10) {
+        // At the end
+        yearMilestones.classList.add('fade-right');
+      } else if (maxScroll > 10) {
+        // In the middle (can scroll both ways)
+        yearMilestones.classList.add('fade-both');
+      }
+    }
+
+    // Handle timeline scrolling
+    timelineTrack.addEventListener('scroll', () => {
+      if (!isScrolling) {
+        requestAnimationFrame(updateFadeEffects);
+      }
+    });
+
+    // Handle year milestones scrolling
+    yearSections.forEach(section => {
+      const yearMilestones = section.querySelector('.year-milestones');
+      if (yearMilestones) {
+        yearMilestones.addEventListener('scroll', () => {
+          requestAnimationFrame(updateYearMilestonesFade);
+        });
+      }
+    });
+
+    // Smooth scroll to year section
+    function scrollToYear(yearIndex) {
+      const targetYear = years[yearIndex];
+      const targetSection = document.querySelector(`[data-year="${targetYear}"]`);
+
+      if (targetSection) {
+        isScrolling = true;
+        targetSection.scrollIntoView({
+          behavior: 'smooth',
+          block: 'nearest',
+          inline: 'start'
+        });
+
+        // Reset scrolling flag after animation
+        setTimeout(() => {
+          isScrolling = false;
+          updateFadeEffects();
+        }, 500);
+      }
+    }
+
+    timelinePrev.addEventListener('click', () => {
+      if(currentYearIndex > 0) {
+        currentYearIndex--;
+        scrollToYear(currentYearIndex);
+        updateTimeline();
+      }
+    });
+
+    timelineNext.addEventListener('click', () => {
+      if(currentYearIndex < years.length - 1) {
+        currentYearIndex++;
+        scrollToYear(currentYearIndex);
+        updateTimeline();
+      }
+    });
+
+    // Add keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if(e.key === 'ArrowLeft' && currentYearIndex > 0) {
+        currentYearIndex--;
+        scrollToYear(currentYearIndex);
+        updateTimeline();
+      } else if(e.key === 'ArrowRight' && currentYearIndex < years.length - 1) {
+        currentYearIndex++;
+        scrollToYear(currentYearIndex);
+        updateTimeline();
+      }
+    });
+
+    // Initialize fade effects
+    updateFadeEffects();
+
+    // Update fade effects on window resize
+    window.addEventListener('resize', updateFadeEffects);
+  }
+})();
+
+  // Map vertical wheel to horizontal scroll for timeline areas (down -> right, up -> left)
+  (function(){
+    try {
+      const timelineTrack = document.getElementById('timelineTrack');
+      const yearContainers = Array.from(document.querySelectorAll('.year-milestones'));
+      const containers = [timelineTrack, ...yearContainers].filter(Boolean);
+
+  const WHEEL_SENSITIVITY = 2.2; // multiplier for wheel deltas
+
+      containers.forEach(el => {
+        // Prevent manual wheel from scrolling the timeline; keep auto-scroll authoritative
+        el.addEventListener('wheel', function(e){
+          // prevent native vertical page scroll when pointer is over timeline
+          try { e.preventDefault(); } catch(_){}
+          // do not map wheel to horizontal scroll — auto-scroll handles movement
+        }, { passive: false });
+      });
+    } catch (err) {
+      // silent fail for older browsers
+      console.warn('timeline wheel binding failed', err);
+    }
+  })();
+
+  // Pointer/touch mapping: vertical swipe/drags -> horizontal scroll for timeline containers.
+  (function(){
+    try {
+  const timelineTrack = document.getElementById('timelineTrack');
+  const yearContainers = Array.from(document.querySelectorAll('.year-milestones'));
+  const containers = [timelineTrack, ...yearContainers].filter(Boolean);
+
+  const POINTER_SENSITIVITY = 1.8; // multiplier for pointer drag/swipe responsiveness
+
+      containers.forEach(el => {
+        // prevent touch/pointer dragging from moving the timeline — keep auto-scroll authoritative
+        try { el.style.touchAction = 'none'; } catch(_){}
+        el.addEventListener('pointermove', function(e){ if(e.cancelable) e.preventDefault(); }, { passive: false });
+        el.addEventListener('touchmove', function(e){ if(e.cancelable) e.preventDefault(); }, { passive: false });
+      });
+    } catch(err){
+      console.warn('timeline pointer/touch binding failed', err);
+    }
+  })();
