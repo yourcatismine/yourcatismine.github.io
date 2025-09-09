@@ -825,6 +825,19 @@ document.getElementById('crushPrevSong').addEventListener('click', () => {
       ],
       github: 'https://github.com/yourcatismine/shop-system',
       demo: null
+    },
+    'atbphosting': {
+      title: 'ATBP Hosting',
+      image: '/frontend/images/atbphosting.png',
+      description: 'First Task to build a Hosting Site to Hosting Company. Best Hosting I have ever used than others!',
+      technologies: ['JS', 'NextJS', 'Bootstrap'],
+      features: [
+        'Responsive design for all devices',
+        'Dark/Light mode toggle',
+        'Smooth scroll animations',
+      ],
+      github: 'https://github.com/yourcatismine/atbphosting',
+      demo: null
     }
   };
 
